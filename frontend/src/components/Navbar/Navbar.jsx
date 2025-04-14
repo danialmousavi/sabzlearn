@@ -100,7 +100,7 @@ export default function Navbar() {
             <i class="fas fa-shopping-cart main-header__cart-icon"></i>
           </a>
           <a href="#" class="main-header__profile">
-            <span class="main-header__profile-text">محمدامین سعیدی راد</span>
+            <span class="main-header__profile-text">دانیال موسوی</span>
           </a>
         </div>
       </div>
