@@ -6,6 +6,7 @@ import AboutUs from '../../components/AboutUs/AboutUs'
 import PopularCourses from '../../components/PopularCourses/PopularCourses'
 import PresellCourses from '../../components/PresellCourses/PresellCourses'
 import LastArticles from '../../components/LastArticles/LastArticles'
+import Footer from '../../components/Footer/Footer'
 export default function Index() {
   return (
     <>
@@ -15,6 +16,7 @@ export default function Index() {
     <PopularCourses/>
     <PresellCourses/>
     <LastArticles/>
+    <Footer/>
     </>
 )
 }
