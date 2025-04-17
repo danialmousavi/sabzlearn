@@ -6,7 +6,7 @@ import Landing from '../Landing/Landing'
 export default function Header() {
   return (
     <>
-        <header class="header">
+        <header className="header">
             <Topbar/>
             <Navbar/>
             <Landing/>

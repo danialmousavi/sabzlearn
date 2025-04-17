@@ -12,6 +12,6 @@ export default function LandingCouter({landCouter}) {
         return()=>clearInterval(interval)
        },[couter])
   return (
-        <span class="landing-status__count">{couter}</span>
+        <span className="landing-status__count">{couter}</span>
   )
 }
