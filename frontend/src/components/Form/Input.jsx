@@ -1,10 +1,10 @@
 import React, { useReducer } from 'react'
 import'./Input.css'
-
+import validator from '../../validators/validators'
 const inputReducer=(state,action)=>{
     switch(action.type){
         case"CHANGE":{
-            return {...state,value:action.value,isValid:action.isValid}
+            return {...state,value:action.value,isValid:validator(action.value,action.validations)}
         }
         default:{
             return state
@@ -17,7 +17,7 @@ export default function Input(props) {
 
 
     const handleChangeInput=(e)=>{
-        dispatch({type:"CHANGE",value:e.target.value,isValid:true})   
+        dispatch({type:"CHANGE",value:e.target.value,isValid:true, validations:props.validations})   
     }
 
 
