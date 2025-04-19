@@ -24,7 +24,6 @@ export default function Login() {
     console.log("user logged in");
     
   }
-  console.log(formState);
   
   return (
     <>
@@ -53,7 +52,8 @@ export default function Login() {
                       validations={[
                         requierdValidator(),
                         minValidator(8),
-                        maxValidator(20)
+                        maxValidator(30),
+                        emailValidator()
                       ]}
                       onInputHandler={onInputHandler}
                       />
