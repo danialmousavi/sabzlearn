@@ -6,12 +6,32 @@ import Footer from '../../components/Footer/Footer'
 import Navbar from '../../components/Navbar/Navbar'
 import Input from '../../components/Form/Input'
 import Button from '../../components/Form/Button'
+import { requierdValidator,minValidator,maxValidator,emailValidator } from '../../validators/rules'
+import { useForm } from '../../hooks/useForm'
 export default function Register() {
   const handleRegister=(e)=>{
     e.preventDefault();
     console.log('user registerd');
     
   }
+    const [formState,onInputHandler]=useForm({
+      name:{
+        value:"",
+        isValid:false
+      },
+      username:{
+        value:"",
+        isValid:false
+      },
+      password:{
+        value:"",
+        isValid:false
+      },
+      email:{
+        value:"",
+        isValid:false
+      }
+    },false)
   return (
     <>
         <Topbar/>
@@ -27,12 +47,35 @@ export default function Register() {
                     </Link>
                   </div>
                   <form action="#" className="login-form">
+                  <div className="login-form__username">
+                      <Input
+                      element="input"
+                      className="login-form__username-input"
+                      type="text"
+                      placeholder="نام و نام خانوادگی "
+                      id="name"
+                      onInputHandler={onInputHandler}
+                      validations={[
+                        requierdValidator(),
+                        minValidator(2),
+                        maxValidator(18)                        
+                      ]}
+                      />                      
+                      <i className="login-form__username-icon fa fa-user"></i>
+                    </div>
                     <div className="login-form__username">
                       <Input
                       element="input"
                       className="login-form__username-input"
                       type="text"
                       placeholder="نام کاربری "
+                      id="username"
+                      onInputHandler={onInputHandler}
+                      validations={[
+                        requierdValidator(),
+                        minValidator(8),
+                        maxValidator(18)                        
+                      ]}                      
                       />                      
                       <i className="login-form__username-icon fa fa-user"></i>
                     </div>
@@ -43,6 +86,14 @@ export default function Register() {
                       className="login-form__password-input"
                       type="text"
                       placeholder="آدرس ایمیل"
+                      id="email"
+                      onInputHandler={onInputHandler}
+                      validations={[
+                        requierdValidator(),
+                        minValidator(2),
+                        emailValidator(),
+                        maxValidator(18)                        
+                      ]}
                       />                            
                       <i className="login-form__password-icon fa fa-envelope"></i>
                     </div>
@@ -52,10 +103,17 @@ export default function Register() {
                       className="login-form__password-input"
                       type="text"
                       placeholder="رمز عبور"
+                      id="password"
+                      onInputHandler={onInputHandler}
+                      validations={[
+                        requierdValidator(),
+                        minValidator(8),
+                        maxValidator(18)                        
+                      ]}
                       />                            
                       <i className="login-form__password-icon fa fa-lock-open"></i>
                     </div>
-                    <Button className="login-form__btn" type="submit" disabled={false} onClick={handleRegister}>
+                    <Button  className={`login-form__btn ${formState.isFormValid?"login-form__btn-success":"login-form__btn-error"}`} type="submit" disabled={!formState.isFormValid} onClick={handleRegister}>
                     <i className="login-form__btn-icon fa fa-user-plus"></i>
                     <span className="login-form__btn-text">عضویت</span>
                     </Button>
