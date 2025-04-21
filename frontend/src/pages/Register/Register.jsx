@@ -8,12 +8,9 @@ import Input from '../../components/Form/Input'
 import Button from '../../components/Form/Button'
 import { requierdValidator,minValidator,maxValidator,emailValidator } from '../../validators/rules'
 import { useForm } from '../../hooks/useForm'
+import Swal from 'sweetalert2'
 export default function Register() {
-  const handleRegister=(e)=>{
-    e.preventDefault();
-    console.log('user registerd');
-    
-  }
+
     const [formState,onInputHandler]=useForm({
       name:{
         value:"",
@@ -32,6 +29,40 @@ export default function Register() {
         isValid:false
       }
     },false)
+    
+    const handleRegister=(e)=>{
+      e.preventDefault();
+      const newUser={
+        name: formState.inputs.name.value,
+        username: formState.inputs.username.value,
+        email: formState.inputs.email.value,
+        password:formState.inputs.password.value,
+        confirmPassword:formState.inputs.password.value,
+      }
+      fetch('http://localhost:3000/v1/auth/register',{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify(newUser),
+      }).then(res=>{
+        if(res.status===201){
+          Swal.fire({
+            title: "user registerd successfully",
+            toast:true,
+            timer:2000,
+            timerProgressBar:true,
+            position:'top',
+            showConfirmButton: false,
+            animation: true,
+            icon:'success'
+          }
+          
+        );
+        }
+        return res.json(); 
+      }).then(data=>console.log(data))      
+    }
   return (
     <>
         <Topbar/>
