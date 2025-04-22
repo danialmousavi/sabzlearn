@@ -7,6 +7,7 @@ import './styles/fonts.css'
 import './styles/variables.css'
 import './styles/defaults.css'
 import './styles/helpers.css'
+import 'sweetalert2/dist/sweetalert2.min.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

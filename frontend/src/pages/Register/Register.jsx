@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import './Register.css'
 import Topbar from '../../components/Topbar/Topbar'
 import Footer from '../../components/Footer/Footer'
@@ -13,7 +13,7 @@ import AuthContext from '../../context/authContext'
 export default function Register() {
     const authContext=useContext(AuthContext)
     console.log(authContext);
-    
+    const navigate=useNavigate();
     const [formState,onInputHandler]=useForm({
       name:{
         value:"",
@@ -49,18 +49,14 @@ export default function Register() {
         body:JSON.stringify(newUser),
       }).then(res=>{
         if(res.status===201){
-          Swal.fire({
-            title: "user registerd successfully",
-            toast:true,
-            timer:2000,
-            timerProgressBar:true,
-            position:'top',
-            showConfirmButton: false,
-            animation: true,
-            icon:'success'
-          }
-          
-        );
+      Swal.fire({
+        title: "خوش آمدید",
+        text: "شما با موفقیت ثبت نام کردین",
+        icon: "success",
+        confirmButtonText:'ورود به پنل'
+      }).then(value=>{
+        navigate('/')
+      });
         }
         return res.json(); 
       }).then(result=>{

@@ -3,14 +3,16 @@ import './Login.css'
 import Topbar from '../../components/Topbar/Topbar'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Input from '../../components/Form/Input'
 import Button from '../../components/Form/Button'
 import { requierdValidator,emailValidator,minValidator,maxValidator } from '../../validators/rules'
 import { useForm } from '../../hooks/useForm'
 import AuthContext from '../../context/authContext'
+import Swal from 'sweetalert2'
 export default function Login() {
   const authContext=useContext(AuthContext);
+  const navigate=useNavigate();
   const [formState,onInputHandler]=useForm({
     username:{
       value:"",
@@ -42,9 +44,23 @@ export default function Login() {
         return res.json();
       }
     }).then(result=>{
+      Swal.fire({
+        title: "خوش آمدید",
+        text: "شما با موفقیت لاگین کردین",
+        icon: "success",
+        confirmButtonText:'ورود به پنل'
+      }).then(value=>{
+        navigate('/')
+      });
       authContext.login({},result.accessToken)      
     }).catch(err=>{
       console.log('err=>',err);
+      Swal.fire({
+        title: "خطا!",
+        text: "کاربر یافت نشد",
+        icon:"error",
+        confirmButtonText:'امتحان دوباره'
+      });
     })
   }
   
