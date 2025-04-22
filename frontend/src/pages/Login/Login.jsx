@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Login.css'
 import Topbar from '../../components/Topbar/Topbar'
 import Navbar from '../../components/Navbar/Navbar'
@@ -8,7 +8,9 @@ import Input from '../../components/Form/Input'
 import Button from '../../components/Form/Button'
 import { requierdValidator,emailValidator,minValidator,maxValidator } from '../../validators/rules'
 import { useForm } from '../../hooks/useForm'
+import AuthContext from '../../context/authContext'
 export default function Login() {
+  const authContext=useContext(AuthContext);
   const [formState,onInputHandler]=useForm({
     username:{
       value:"",
@@ -21,8 +23,29 @@ export default function Login() {
   },false)
   const handleLogin=(e)=>{
     e.preventDefault()
-    console.log("user logged in");
-    
+    const userData={
+      identifier: formState.inputs.username.value,
+      password: formState.inputs.password.value
+    }
+    fetch('http://localhost:3000/v1/auth/login',{
+      method:"POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify(userData)
+    }).then(res=>{
+      if(!res.ok){
+        return res.text().then(text=>{
+          throw new Error(text)
+        })
+      }else{
+        return res.json();
+      }
+    }).then(result=>{
+      authContext.login({},result.accessToken)      
+    }).catch(err=>{
+      console.log('err=>',err);
+    })
   }
   
   return (
@@ -53,7 +76,6 @@ export default function Login() {
                         requierdValidator(),
                         minValidator(8),
                         maxValidator(30),
-                        emailValidator()
                       ]}
                       onInputHandler={onInputHandler}
                       />
