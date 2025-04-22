@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Link} from 'react-router-dom'
 import './Register.css'
 import Topbar from '../../components/Topbar/Topbar'
@@ -9,8 +9,11 @@ import Button from '../../components/Form/Button'
 import { requierdValidator,minValidator,maxValidator,emailValidator } from '../../validators/rules'
 import { useForm } from '../../hooks/useForm'
 import Swal from 'sweetalert2'
+import AuthContext from '../../context/authContext'
 export default function Register() {
-
+    const authContext=useContext(AuthContext)
+    console.log(authContext);
+    
     const [formState,onInputHandler]=useForm({
       name:{
         value:"",
@@ -29,7 +32,6 @@ export default function Register() {
         isValid:false
       }
     },false)
-    
     const handleRegister=(e)=>{
       e.preventDefault();
       const newUser={
@@ -61,7 +63,9 @@ export default function Register() {
         );
         }
         return res.json(); 
-      }).then(data=>console.log(data))      
+      }).then(result=>{
+        authContext.login(result.user,result.accessToken);
+      })      
     }
   return (
     <>
