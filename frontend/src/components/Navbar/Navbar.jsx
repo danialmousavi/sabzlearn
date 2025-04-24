@@ -9,8 +9,6 @@ export default function Navbar() {
     fetch('http://localhost:3000/v1/menus').then(res=>res.json()).then(data=>setGetAllNavbars(data)
     )
   },[])
-  console.log(getAllNavbars);
-  
   return (
     <div className="main-header">
       <div className="container-fluid">

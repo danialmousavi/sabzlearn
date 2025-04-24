@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CourseInfo.css";
 import Topbar from "../../components/Topbar/Topbar";
 import Navbar from "../../components/Navbar/Navbar";
@@ -7,7 +7,27 @@ import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import CourseDetailBox from "../../components/CourseDetailBox/CourseDetailBox";
 import CommentsTextArea from "../../components/CommentsTextArea/CommentsTextArea";
 import Accordion from "react-bootstrap/Accordion";
+import { useParams } from "react-router";
 export default function CourseInfo() {
+  const {courseName}=useParams();
+  const [courseDetails,setCourseDetails]=useState([]);
+  const [courseCategory,setCourseCategory]=useState([]);
+  const [updatedAt,setPpdatedAt]=useState('')
+  useEffect(()=>{    
+    fetch(`http://localhost:3000/v1/courses/${courseName}`,{
+      method:"POST",
+      headers:{
+        "Authorization":`Bearer ${JSON.parse(localStorage.getItem('user'))}`
+      }
+    }).then(res=>res.json()).then(data=>{
+      setCourseDetails(data);
+      setCourseCategory(data.categoryID);
+      setPpdatedAt(data.updatedAt)
+    }
+    )
+  },[])
+  console.log(courseDetails);
+  
   return (
     <>
       <Topbar />
@@ -30,18 +50,13 @@ export default function CourseInfo() {
           <div className="row">
             <div className="col-6">
               <a href="#" className="course-info__link">
-                آموزش برنامه نویسی فرانت اند
+                {courseCategory.title}
               </a>
               <h1 className="course-info__title">
-                آموزش 20 کتابخانه جاوااسکریپت برای بازار کار
+                {courseDetails.name}
               </h1>
               <p className="course-info__text">
-                امروزه کتابخانه‌ها کد نویسی را خیلی آسان و لذت بخش تر کرده اند.
-                به قدری که حتی امروزه هیچ شرکت برنامه نویسی پروژه های خود را با
-                Vanilla Js پیاده سازی نمی کند و همیشه از کتابخانه ها و فریمورک
-                های موجود استفاده می کند. پس شما هم اگه میخواید یک برنامه نویس
-                عالی فرانت اند باشید، باید کتابخانه های کاربردی که در بازار کار
-                استفاده می شوند را به خوبی بلد باشید
+                {courseDetails.description}
               </p>
               <div className="course-info__social-media">
                 <a href="#" className="course-info__social-media-item">
@@ -58,8 +73,7 @@ export default function CourseInfo() {
 
             <div className="col-6">
               <video
-                src=""
-                poster="/images/courses/js_project.png"
+                poster={courseDetails.cover}
                 className="course-info__video"
                 controls
               ></video>
@@ -89,7 +103,7 @@ export default function CourseInfo() {
                     />
                     <CourseDetailBox
                       title="آخرین بروزرسانی:"
-                      text="1401/03/02"
+                      text={updatedAt.length&&updatedAt.slice(0,10)}
                       icon="calendar-alt"
                     />
                     <CourseDetailBox
