@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import'./CourseBox.css'
 import CircleSpinner from "../CircleSpinner/CircleSpinner";
-export default function CourseBox() {
+import { Link } from "react-router";
+export default function CourseBox(props) {
   const[isShow,SetIshow]=useState(false);
   const handleLoadImage=()=>SetIshow(true)
   return (
     <>
           <div className="col-4">
-                <div className="course-box">
+                <Link to={`/course-info/${props.shortName}`} className="course-box">
                   <a href="#">
-                    <img src="/images/courses/fareelancer.png" alt="Course img" className="course-box__img" onLoad={handleLoadImage}/>
+                    <img src={props.cover} alt="Course img" className="course-box__img" onLoad={handleLoadImage}/>
                   </a>
                   {!isShow&&(
                     <CircleSpinner/>
                   )}
                   <div className="course-box__main">
-                    <a href="#" className="course-box__title">دوره پروژه محور متخصص جنگو</a>
+                    <a href="#" className="course-box__title">{props.name}</a>
 
                     <div className="course-box__rating-teacher">
                       <div className="course-box__teacher">
@@ -47,7 +48,7 @@ export default function CourseBox() {
                     </a>
                   </div>
 
-                </div>
+                </Link>
               </div>
 
     </>

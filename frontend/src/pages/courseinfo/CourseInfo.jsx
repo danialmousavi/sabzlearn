@@ -8,12 +8,16 @@ import CourseDetailBox from "../../components/CourseDetailBox/CourseDetailBox";
 import CommentsTextArea from "../../components/CommentsTextArea/CommentsTextArea";
 import Accordion from "react-bootstrap/Accordion";
 import { useParams } from "react-router";
+import Swal from 'sweetalert2'
 export default function CourseInfo() {
   const {courseName}=useParams();
   const [courseDetails,setCourseDetails]=useState([]);
   const [courseCategory,setCourseCategory]=useState([]);
   const [updatedAt,setPpdatedAt]=useState('')
   const [sessions,setSessions]=useState([]);
+  const [isUserRegisteredToThisCourse,setIsUserRegisteredToThisCourse]=useState(false);
+  const [courseStudentsCount,setCourseStudentsCount]=useState(0);
+  const [comments,setComments]=useState([]);
   useEffect(()=>{    
     const localStorageData=JSON.parse(localStorage.getItem('user'))
     
@@ -27,9 +31,54 @@ export default function CourseInfo() {
       setCourseCategory(data.categoryID);
       setPpdatedAt(data.updatedAt);
       setSessions(data.sessions)
+      setIsUserRegisteredToThisCourse(data.isUserRegisteredToThisCourse)
+      setCourseStudentsCount(data.courseStudentsCount);
+      setComments(data.comments)
     }
     )
   },[])
+  
+  const submitComment = (newCommentBody) => {
+      const localStorageData=JSON.parse(localStorage.getItem("user"));
+      fetch("http://localhost:3000/v1/comments",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${localStorageData}`
+        },
+        body:JSON.stringify({
+          body:newCommentBody,
+          courseShortName:courseName
+        })
+      }).then(res=>res.json()).then(data=>{
+        Swal.fire({
+          title: "عالیه!",
+          text: "کامنت با موفقیت ثبت شد",
+          icon: "success",
+          timer:3000,
+          confirmButtonText:"تایید"
+        });
+      }
+      )
+    
+  };
+  // const localStorageData = JSON.parse(localStorage.getItem("user"));
+
+  // fetch(`http://localhost:3000/v1/comments`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${localStorageData}`,
+  //   },
+  //   body: JSON.stringify({
+  //     body: newCommentBody,
+  //     courseShortName: courseName,
+  //   }),
+  // })
+  //   .then((res) => res.json())
+  //   .then((result) => {
+  //     console.log(result);
+  //   });
   console.log(courseDetails);
   
   return (
@@ -230,14 +279,16 @@ export default function CourseInfo() {
                   <div className="introduction__topic">
                     <Accordion defaultActiveKey="0">
                       {sessions.length?(
+                        
                       <Accordion.Item eventKey="1">
                       <Accordion.Header>معرفی دوره</Accordion.Header>
-                      <Accordion.Body className=" introduction__accordion-body">
-                        <div className="introduction__accordion-right">
-                          <span className="introduction__accordion-count">1</span>
+                        {sessions.map((session,index)=>(
+                      <Accordion.Body className=" introduction__accordion-body" key={index}>
+                        <div className="introduction__accordion-right" >
+                          <span className="introduction__accordion-count">{index+1}</span>
                           <i className="fab fa-youtube introduction__accordion-icon"></i>
                           <a href="#" className="introduction__accordion-link">
-                            معرفی دوره + چرا یادگیری کتابخانه ها ضروری است؟
+                           {session.title}
                           </a>
                         </div>
                         <div className="introduction__accordion-left">
@@ -246,6 +297,7 @@ export default function CourseInfo() {
                           </span>
                         </div>
                       </Accordion.Body>
+                        ))}
                       
                     </Accordion.Item>
                       ):(
@@ -289,7 +341,8 @@ export default function CourseInfo() {
                 </div>
 
                 {/* Finish Teacher Details  */}
-                <CommentsTextArea />
+                <CommentsTextArea comments={comments}
+                  submitComment={submitComment}/>
               </div>
             </div>
 
@@ -299,7 +352,7 @@ export default function CourseInfo() {
                   <div className="course-info__register">
                     <span className="course-info__register-title">
                       <i className="fas fa-graduation-cap course-info__register-icon"></i>
-                      {courseDetails.__v===0?"ثبت نام در دوره":"دانشجوی دوره هستید"}
+                      {isUserRegisteredToThisCourse===false?"ثبت نام در دوره":"دانشجوی دوره هستید"}
                     </span>
                   </div>
                 </div>
@@ -311,7 +364,7 @@ export default function CourseInfo() {
                         <span className="course-info__total-sale-text">
                           تعداد دانشجو :
                         </span>
-                        <span className="course-info__total-sale-number">178</span>
+                        <span className="course-info__total-sale-number">{courseStudentsCount}</span>
                       </div>
                     </div>
                     <div className="course-info__bottom">
