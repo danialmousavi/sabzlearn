@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Courses.css'
 import Topbar from '../../components/Topbar/Topbar'
 import Navbar from '../../components/Navbar/Navbar'
@@ -6,6 +6,11 @@ import Footer from '../../components/Footer/Footer'
 import BreadCrumb from '../../components/BreadCrumb/BreadCrumb'
 import CourseBox from '../../components/CourseBox/CourseBox'
 export default function Courses() {
+    const [courses,setCourses]=useState([]);
+    useEffect(()=>{
+      fetch('http://localhost:3000/v1/courses').then(res=>res.json()).then(data=>setCourses(data)
+      )
+    },[])
   return (
     <>
     <Topbar/>
@@ -25,14 +30,9 @@ export default function Courses() {
               <div className="courses-content">
                 <div className="container">
                   <div className="row">
-                    <CourseBox />
-                    <CourseBox />
-                    <CourseBox />
-                    <CourseBox />
-                    <CourseBox />
-                    <CourseBox />
-                    <CourseBox />
-                    <CourseBox />
+                    {courses.map(course=>(
+                    <CourseBox {...course}/>
+                    ))}
                   </div>
                 </div>
               </div>

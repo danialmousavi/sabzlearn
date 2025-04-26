@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CategoryInfo.css";
 import Topbar from "../../components/Topbar/Topbar";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CourseBox from "../../components/CourseBox/CourseBox";
 import Pagination from "../../components/Pagination/Pagination";
+import { useParams } from "react-router";
 export default function CategoryInfo() {
+  const {categoryName}=useParams();
+  const [courses,setCourses]=useState([]);
+  useEffect(()=>{
+    fetch('http://localhost:3000/v1/courses').then(res=>res.json()).then(data=>setCourses(data)
+    )
+  },[categoryName])
   return (
     <>
       <Topbar />
@@ -63,9 +70,9 @@ export default function CategoryInfo() {
           <div className="courses-content">
             <div className="container">
               <div className="row">
-                <CourseBox/>
-                <CourseBox/>
-                <CourseBox/>
+                {courses.map(course=>(
+                <CourseBox {...course}/>
+                ))}
               </div>
             </div>
           </div>
