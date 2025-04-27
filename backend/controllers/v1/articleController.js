@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
     body,
     creator: req.user._id,
     categoryID,
-    cover: "images/courses/js.jpeg",
+    cover: "/images/blog/3.jpg",
   });
 
   const populatedCourse = await articleModel

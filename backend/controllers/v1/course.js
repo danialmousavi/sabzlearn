@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
     price,
     isComplete: 0,
     support: "گروه تلگرامی",
-    cover: "images/courses/js.jpeg",
+    cover: "/images/courses/fareelancer.png",
   });
 
   const populatedCourse = await courseModel
@@ -108,6 +108,11 @@ exports.register = async (req, res) => {
 exports.getCategoryCourses = async (req, res) => {
   const { categoryName } = req.params;
   const category = await categoryModel.find({ name: categoryName })
-  const categoryCourses = await courseModel.find({ categoryID: category[0]._id })
-  res.json(categoryCourses)
+  console.log(category.length);
+  if(category.length) {
+    const categoryCourses = await courseModel.find({ categoryID: category[0]._id })
+    res.json(categoryCourses)
+  } else {
+    res.json([])
+  }
 };

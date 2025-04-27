@@ -8,7 +8,7 @@ const isAdminMiddleware = require('../../middlewares/isAdmin');
 
 const router = express.Router();
 
-router.use(authenticatedMiddleware);
+// router.use(authenticatedMiddleware);
 
 router
   .route('/')

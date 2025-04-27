@@ -40,7 +40,7 @@ export default function Courses() {
               </div>
                   <Pagination
                     items={courses}
-                    itemCount={1}
+                    itemCount={6}
                     pathName="/courses"
                     setShownCourses={setShownCourses}
                   />
