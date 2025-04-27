@@ -40,4 +40,6 @@
     color: var(--white-color);
     background-color: var(--primary-color);
   }
-  
+  .article-card__img{
+    width: 100%;
+  }
