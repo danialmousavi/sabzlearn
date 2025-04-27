@@ -28,7 +28,7 @@ export default function Navbar() {
               </li>
               {getAllNavbars.map(link=>(
               <li className="main-header__item" key={link._id}>
-                <Link to={`${link.href}`/1 } className="main-header__link">
+                <Link to={`${link.href}/1` } className="main-header__link">
                   {link.title}
                   {link.submenus.length!=0&&(
                 <>
