@@ -22,13 +22,13 @@ export default function Navbar() {
 
             <ul className="main-header__menu">
               <li className="main-header__item">
-                <a href="#" className="main-header__link">
+                <Link to="/" className="main-header__link">
                   صفحه اصلی
-                </a>
+                </Link>
               </li>
               {getAllNavbars.map(link=>(
               <li className="main-header__item" key={link._id}>
-                <Link to={link.href} className="main-header__link">
+                <Link to={`${link.href}`/1 } className="main-header__link">
                   {link.title}
                   {link.submenus.length!=0&&(
                 <>

@@ -8,10 +8,10 @@ import Register from "./pages/Register/Register";
 
 const Routes=[
     {path:'/',element:<Index/>},
-    {path:'/category-info/:categoryName',element:<CategoryInfo/>},
+    {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
     {path:'/course-info/:courseName',element:<CourseInfo/>},
     {path:'/article-info/:articleName',element:<ArticleInfo/>},
-    {path:'/courses',element:<Courses/>},
+    {path:'/courses/:page',element:<Courses/>},
     {path:'/login',element:<Login/>},
     {path:'/register',element:<Register/>},
 

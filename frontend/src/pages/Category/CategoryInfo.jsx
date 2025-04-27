@@ -9,6 +9,8 @@ import { useParams } from "react-router";
 export default function CategoryInfo() {
   const {categoryName}=useParams();
   const [courses,setCourses]=useState([]);
+  const [shownCourses,setShownCourses]=useState([]);  
+  
   useEffect(()=>{
     fetch('http://localhost:3000/v1/courses').then(res=>res.json()).then(data=>setCourses(data)
     )
@@ -70,14 +72,19 @@ export default function CategoryInfo() {
           <div className="courses-content">
             <div className="container">
               <div className="row">
-                {courses.map(course=>(
+                {shownCourses.map(course=>(
                 <CourseBox {...course}/>
                 ))}
               </div>
             </div>
           </div>
         </div>
-        <Pagination/>
+        <Pagination
+             items={courses}
+             itemCount={1}
+            pathName={`/category-info/${categoryName}`}
+            setShownCourses={setShownCourses}        
+        />
       </section>
       <Footer />
     </>
