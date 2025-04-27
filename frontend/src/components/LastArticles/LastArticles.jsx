@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./LastArticles.css";
 import SectionHeader from "../SectionHeader/SectionHeader";
 import ArticleBox from "../ArticleBox/ArticleBox";
 export default function LastArticles() {
+  const [articles, setArticles] = React.useState([]);
+  useEffect(()=>{
+    fetch("http://localhost:3000/v1/articles").then(res=>res.json()).then(data=>setArticles(data))
+  },[])
+  console.log(articles);
+  
   return (
     <section className="articles">
       <div className="container">
@@ -13,9 +19,10 @@ export default function LastArticles() {
         />
         <div className="articles__content">
           <div className="row">
-            <ArticleBox title="نحوه نصب کتابخانه در جاوااسکریپت | آموزش نصب کتابخانه جاوااسکریپت" desc="زبان جاوااسکریپت هم مانند دیگر زبان­های برنامه نویسی رایج، دارای کتابخانه های مختلفی برای تسریع..." cover="images/blog/4.png"/>
-            <ArticleBox title="نحوه نصب کتابخانه در پایتون | آموزش نصب کتابخانه پایتون" desc="زبان پایتون هم مانند دیگر زبان­های برنامه نویسی رایج، دارای کتابخانه های مختلفی برای تسریع..." cover="images/blog/3.jpg"/>
-            <ArticleBox title="نحوه نصب کتابخانه در جنگو | آموزش نصب کتابخانه جنگو" desc="زبان جنگو هم مانند دیگر زبان­های برنامه نویسی رایج، دارای کتابخانه های مختلفی برای تسریع..." cover="images/blog/3.jpg"/>
+            {articles.map((article)=>(
+            <ArticleBox {...article}/>
+
+            ))}
           </div>
         </div>
       </div>

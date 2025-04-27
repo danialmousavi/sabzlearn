@@ -1,11 +1,24 @@
-import React from "react";
+import React, { use, useEffect } from "react";
 import "./ArticleInfo.css";
 import Topbar from "../../components/Topbar/Topbar";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import CommentsTextArea from "../../components/CommentsTextArea/CommentsTextArea";
+import { useParams } from "react-router";
 export default function ArticleInfo() {
+  const [articleData,setArticleData] = React.useState([]);
+  const [categoryID,setCategoryID] = React.useState([]);
+  const {articleName}=useParams();
+  useEffect(()=>{
+      fetch(`http://localhost:3000/v1/articles/${articleName}`).then(res=>res.json()).then(data=>{
+        setArticleData(data)
+        setCategoryID(data.categoryID)
+        console.log(data);
+        
+      }
+      )
+  },[])
   return (
     <>
       <Topbar />
@@ -27,12 +40,12 @@ export default function ArticleInfo() {
             <div className="col-8">
             <div className="article">
                 <h1 className="article__title">
-                  معرفی بهترین سایت آموزش جاوا اسکریپت [ تجربه محور ] + آموزش رایگان
+                  {articleData.title}
                 </h1>
                 <div className="article__header">
                   <div className="article-header__category article-header__item">
                     <i className="far fa-folder article-header__icon"></i>
-                    <a href="#" className="article-header__text">جاوا اسکریپت</a>
+                    <a href="#" className="article-header__text">{categoryID.title}</a>
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-user article-header__icon"></i>
@@ -40,14 +53,14 @@ export default function ArticleInfo() {
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-clock article-header__icon"></i>
-                    <span className="article-header__text"> ارسال شده توسط قدیر</span>
+                    <span className="article-header__text"> {articleData.createdAt}</span>
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-eye article-header__icon"></i>
                     <span className="article-header__text">  2.14k بازدید</span>
                   </div>
                 </div>
-                <img src="/images/blog/1.jpg" alt="Article Cover" className="article__banner" />
+                <img src={articleData.cover} alt="Article Cover" className="article__banner" />
 
                 <div className="article__score">
                   <div className="article__score-icons">
@@ -61,7 +74,7 @@ export default function ArticleInfo() {
                 </div>
 
                 <p className="article__paragraph paragraph">
-                  جاوا اسکریپت یکی از زبان‌های برنامه‌نویسی اصلی حوزه فرانت‌اند است که به واسطه فریم ورک‌های آن می‌توان انواع وب سایت‌ها، اپلیکیشن‌ها و وب اپلیکیشن‌ها را طراحی کرد. به طور کلی بعد از یادگیری html و css معمولاً باید آموزش جاوا اسکریپت را نیز فرا بگیرید. . چرا که این زبان تکمیل‌کننده html و css بوده و در چنین شرایطی موقعیت‌های شغلی بیشتر را در اختیار خواهید داشت و همچنین می‌توانید پروژه‌های گسترده‌تری را انجام دهید. در حال حاضر با وجود منابع رایگان موجود در وب شما به راحتی می‌توانید زبان جاوا اسکریپت را به صورت حرفه‌ای فرا بگیرید. به همین واسطه در ادامه مطلب قصد داریم سایت‌های شاخص آموزش این زبان برنامه‌نویسی در جهان را به شما معرفی کنیم و در آخر بگوییم که بهترین سایت آموزش جاوا اسکریپت کدام است.
+                  {articleData.body}
                 </p>
 
                 <div className="article-read">
@@ -82,10 +95,10 @@ export default function ArticleInfo() {
                 <img src="/images/blog/2.jpg" alt="Article Image" className="article__seconadary-banner" />
                 <div className="article-section">
                   <h2 className="article-section__title">
-                    معرفی بهترین سایت ‌های آموزش جاوا اسکریپت:
+                    {articleData.description}
                   </h2>
                   <p className="paragraph article-section__text">
-                    توجه داشته باشید که تمام وب سایت‌هایی که به عنوان بهترین سایت آموزش جاوا اسکریپت در ادامه معرفی می‌کنیم، بین‌المللی هستند و منابع موجود در آن‌ها به زبان انگلیسی است. در نتیجه شما باید یا تسلط متوسط و حداقلی به زبان انگلیسی داشته باشید و یا اینکه با استفاده از گوگل ترنسلیت منابع موجود را ترجمه کرده و از آن‌ها استفاده کنید. به همین دلیل در انتهای محتوا به شما خواهیم گفت که راه آسان دیگری برای یادگیری زبان جاوا اسکریپت وجود دارد که شما بتوانید به واسطه آن به صورت رایگان و به زبان فارسی این زبان را یاد بگیرید.
+                    {articleData.body}
                   </p>
                   <img src="/images/blog/4.png" alt="article body img" className="article-section__img" />
                 </div>
@@ -145,7 +158,7 @@ export default function ArticleInfo() {
                   </div>
                 </div>
               </div>
-              <CommentsTextArea/>
+              {/* <CommentsTextArea/> */}
             </div>
           </div>
         </div>
