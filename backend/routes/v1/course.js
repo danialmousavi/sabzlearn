@@ -25,6 +25,9 @@ router
   .route("/:id/sessions")
   .post(isAdminMiddleware, courseController.createSession);
 
+router.route('/presell').get(courseController.getAll)
+router.route('/popular').get(courseController.getAll)
+
 router.route("/:shortName").post(loginUser, courseController.getOne);
 
 router.route("/:id/register").post(courseController.register);
