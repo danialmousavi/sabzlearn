@@ -19,6 +19,8 @@ export default function ArticleInfo() {
       }
       )
   },[])
+  console.log(articleData);
+  
   return (
     <>
       <Topbar />
@@ -49,7 +51,7 @@ export default function ArticleInfo() {
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-user article-header__icon"></i>
-                    <span className="article-header__text"> ارسال شده توسط قدیر</span>
+                    <span className="article-header__text"> ارسال شده توسط {articleData.creator.name}</span>
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-clock article-header__icon"></i>

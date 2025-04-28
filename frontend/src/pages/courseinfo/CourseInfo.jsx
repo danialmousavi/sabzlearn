@@ -146,7 +146,7 @@ export default function CourseInfo() {
                   <div className="row">
                     <CourseDetailBox
                       title="وضعیت دوره:"
-                      text="به اتمام رسیده"
+                      text={courseDetails.isCompeleted?"به اتمام رسیده":"در حال برگزاری"}
                       icon="graduation-cap"
                     />
                     <CourseDetailBox
@@ -161,12 +161,12 @@ export default function CourseInfo() {
                     />
                     <CourseDetailBox
                       title="روش پشتیبانی"
-                      text="آنلاین"
+                      text={courseDetails.support}
                       icon="user-alt"
                     />
                     <CourseDetailBox
-                      title="پیش نیاز:"
-                      text="HTML CSS"
+                      title="قیمت"
+                      text={courseDetails.price===0?"رایگان":courseDetails.price.toLocaleString()}
                       icon="info-circle"
                     />
                     <CourseDetailBox

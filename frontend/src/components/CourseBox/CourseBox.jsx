@@ -5,6 +5,7 @@ import { Link } from "react-router";
 export default function CourseBox(props) {
   const[isShow,SetIshow]=useState(false);
   const handleLoadImage=()=>SetIshow(true)
+  
   return (
     <>
           <div className="col-4" style={{width:`${props.isSlider&&"100%"}`}}>
@@ -37,7 +38,7 @@ export default function CourseBox(props) {
                         <i className="fas fa-users course-box__users-icon"></i>
                         <span className="course-box__users-text">500</span>
                       </div>
-                      <span className="course-box__price">1,000,000</span>
+                      <span className="course-box__price">{props.price===0?"رایگان":props.price.toLocaleString()}</span>
                     </div>
                   </div>
 
