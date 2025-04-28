@@ -6,7 +6,7 @@ export default function ArticleBox({title,description,cover,shortName}) {
     <div className="col-4">
     <div className="article-card">
       <div className="article-card__header">
-        <Link to={`article-info/${shortName}`} className="article-card__link-img">
+        <Link to={`/article-info/${shortName}`} className="article-card__link-img">
           <img src={cover} className="article-card__img" alt="Article Cover" />
         </Link>
       </div>
