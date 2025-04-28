@@ -7,7 +7,7 @@ export default function CourseBox(props) {
   const handleLoadImage=()=>SetIshow(true)
   return (
     <>
-          <div className="col-4">
+          <div className="col-4" style={{width:`${props.isSlider&&"100%"}`}}>
                 <Link to={`/course-info/${props.shortName}`} className="course-box">
                   <a href="#">
                     <img src={props.cover} alt="Course img" className="course-box__img" onLoad={handleLoadImage}/>

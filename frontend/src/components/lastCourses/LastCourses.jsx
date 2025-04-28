@@ -22,7 +22,7 @@ export default function LastCourses() {
         <div className="courses-content">
           <div className="container">
             <div className="row">
-              {courses.map(course=>(
+              {courses.slice(0,3).map(course=>(
                   <CourseBox {...course}/>
               ))}
             </div>

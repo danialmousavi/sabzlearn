@@ -20,7 +20,7 @@ export default function LastArticles() {
         />
         <div className="articles__content">
           <div className="row">
-            {articles.map((article)=>(
+            {articles.slice(0,3).map((article)=>(
             <ArticleBox {...article}/>
 
             ))}
