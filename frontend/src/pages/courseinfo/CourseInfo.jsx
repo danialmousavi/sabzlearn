@@ -166,7 +166,7 @@ export default function CourseInfo() {
                     />
                     <CourseDetailBox
                       title="قیمت"
-                      text={courseDetails.price===0?"رایگان":courseDetails.price.toLocaleString()}
+                      text={courseDetails.price===0?"رایگان":courseDetails.price}
                       icon="info-circle"
                     />
                     <CourseDetailBox
