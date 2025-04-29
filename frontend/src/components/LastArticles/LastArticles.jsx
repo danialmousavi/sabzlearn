@@ -7,7 +7,6 @@ export default function LastArticles() {
   useEffect(()=>{
     fetch("http://localhost:3000/v1/articles").then(res=>res.json()).then(data=>setArticles(data))
   },[])
-  console.log(articles);
   
   return (
     <section className="articles">

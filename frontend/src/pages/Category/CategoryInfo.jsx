@@ -12,7 +12,7 @@ export default function CategoryInfo() {
   const [shownCourses,setShownCourses]=useState([]);  
   
   useEffect(()=>{
-    fetch('http://localhost:3000/v1/courses').then(res=>res.json()).then(data=>setCourses(data)
+    fetch(`http://localhost:3000/v1/courses/category/${categoryName}`).then(res=>res.json()).then(data=>setCourses(data)
     )
   },[categoryName])
   return (
@@ -72,16 +72,26 @@ export default function CategoryInfo() {
           <div className="courses-content">
             <div className="container">
               <div className="row">
+                {shownCourses.length===0?(
+                  <>
+                    <div className="alert alert-warning">
+                      هیچ دوره ای برای این دسته بندی وجود ندارد
+                    </div>
+                  </>
+                ):(
+                  <>
                 {shownCourses.map(course=>(
                 <CourseBox {...course}/>
                 ))}
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
         <Pagination
              items={courses}
-             itemCount={1}
+             itemCount={3}
             pathName={`/category-info/${categoryName}`}
             setShownCourses={setShownCourses}        
         />
