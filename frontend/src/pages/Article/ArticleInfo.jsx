@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import "./ArticleInfo.css";
 import Topbar from "../../components/Topbar/Topbar";
 import Navbar from "../../components/Navbar/Navbar";
@@ -9,12 +9,14 @@ import { useParams } from "react-router";
 export default function ArticleInfo() {
   const [articleData,setArticleData] = React.useState([]);
   const [categoryID,setCategoryID] = React.useState([]);
+  const [creator,setCreator]=useState('');
   const {articleName}=useParams();
   useEffect(()=>{
       fetch(`http://localhost:3000/v1/articles/${articleName}`).then(res=>res.json()).then(data=>{
         setArticleData(data)
         setCategoryID(data.categoryID)
         console.log(data);
+        setCreator(data.creator)
         
       }
       )
@@ -51,7 +53,7 @@ export default function ArticleInfo() {
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-user article-header__icon"></i>
-                    <span className="article-header__text"> ارسال شده توسط {articleData.creator.name}</span>
+                    <span className="article-header__text"> ارسال شده توسط{` ${creator.name}`}</span>
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-clock article-header__icon"></i>

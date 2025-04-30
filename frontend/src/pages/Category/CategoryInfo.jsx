@@ -13,6 +13,7 @@ export default function CategoryInfo() {
   const [status,setStatus]=useState('default');
   const [orderdCourses,setOrderedCourses]=useState([]);
   const [statusTitle,setStatusTitle]=useState('مرتب سازی پیش فرض');
+  const [searchValue,setSearchValue]=useState('');
   useEffect(()=>{
     fetch(`http://localhost:3000/v1/courses/category/${categoryName}`).then(res=>res.json()).then(data=>setCourses(data)
     )
@@ -49,6 +50,19 @@ export default function CategoryInfo() {
   }, [courses]);
 const handleStausTitle=(e)=>{
 setStatusTitle(e.target.innerText);
+}
+// useEffect(()=>{
+// if(searchValue.length>0){
+//   const filteredCourses=orderdCourses.filter(course=>course.name.toLowerCase().includes(searchValue.toLowerCase()));
+//   setShownCourses(filteredCourses);
+// }else{
+//   setShownCourses(orderdCourses);
+// }
+// }, [searchValue]);
+const handleSearch=(e)=>{
+  setSearchValue(e.target.value);
+  const filteredCourses=orderdCourses.filter(course=>course.name.toLowerCase().includes(e.target.value.toLowerCase()));
+  setShownCourses(filteredCourses);
 }
   return (
     <>
@@ -111,6 +125,7 @@ setStatusTitle(e.target.innerText);
                   type="text"
                   className="courses-top-bar__input"
                   placeholder="جستجوی دوره ..."
+                  onChange={handleSearch}
                 />
                 <i className="fas fa-search courses-top-bar__search-icon"></i>
               </form>
