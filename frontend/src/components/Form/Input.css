@@ -1,6 +1,26 @@
-.success{
-    border: 2px solid var(--primary-color);
+/* Input.css */
+
+input,
+textarea {
+  outline: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
 }
-.error{
-    border: 2px solid red;
+
+/* وضعیت موفق */
+input.success,
+textarea.success {
+  border: 2px solid var(--primary-color);
+}
+
+/* وضعیت خطا */
+input.error,
+textarea.error {
+  border: 2px solid red;
 }

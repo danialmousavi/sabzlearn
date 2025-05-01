@@ -7,8 +7,6 @@ const courseUserModel = require("../../models/course-user");
 exports.create = async (req, res) => {
   const { name, description, shortName, categoryID, price } = req.body;
 
-  console.log(req.body);
-
   const course = await courseModel.create({
     name,
     description,
@@ -108,7 +106,6 @@ exports.register = async (req, res) => {
 exports.getCategoryCourses = async (req, res) => {
   const { categoryName } = req.params;
   const category = await categoryModel.find({ name: categoryName })
-  console.log(category.length);
   if(category.length) {
     const categoryCourses = await courseModel.find({ categoryID: category[0]._id })
     res.json(categoryCourses)

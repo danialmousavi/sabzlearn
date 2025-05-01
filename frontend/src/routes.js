@@ -1,6 +1,7 @@
 import ArticleInfo from "./pages/Article/ArticleInfo";
 import Articles from "./pages/Articles/Articles";
 import CategoryInfo from "./pages/Category/CategoryInfo";
+import Contact from "./pages/ContactUs/Contact";
 import CourseInfo from "./pages/courseinfo/CourseInfo";
 import Courses from "./pages/Courses/Courses";
 import Index from "./pages/index/Index";
@@ -16,6 +17,7 @@ const Routes=[
     {path:'/courses/:page',element:<Courses/>},
     {path:'/login',element:<Login/>},
     {path:'/register',element:<Register/>},
+    {path:'/contact',element:<Contact/>},
 
 ]
 export default Routes

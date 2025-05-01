@@ -4,8 +4,6 @@ const sessionModel = require("../../models/session");
 exports.create = async (req, res) => {
   const { title, description, body, shortName, categoryID } = req.body;
 
-  console.log(req.body);
-
   const article = await articleModel.create({
     title,
     description,
