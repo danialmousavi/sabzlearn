@@ -1,7 +1,54 @@
 import React from "react";
 import "./Footer.css";
 import FooterItem from "../FooterItem/FooterItem";
+import { Link } from "react-router";
+import Input from "../Form/Input";
+import { emailValidator } from "../../validators/rules";
+import { useForm } from "../../hooks/useForm";
+import Swal from "sweetalert2";
 export default function Footer() {
+    const [formState,onInputHandler]=useForm({
+      email:{
+        value:"",
+        isValid:false
+      },
+    },false)
+    const addNewEmail=(e)=>{
+      e.preventDefault();
+      const emailData={
+        email:formState.inputs.email.value
+      }
+      fetch("http://localhost:3000/v1/newsletters",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify(emailData)
+      }).then(res=>{
+        if(res.ok){
+          return res.json()
+        } else{
+          return res.text().then(text=>{
+            throw new Error(text)
+          })
+        }
+        
+      }).then(result=>{
+              Swal.fire({
+                title: "سپاس از شما",
+                text: "شما با موفقیت در خبرنامه عضو شدین",
+                icon: "success",
+                confirmButtonText:'متوجه شدم'
+              })
+      }).catch(err=>{
+        console.log('err=>',err);
+        Swal.fire({
+          title: "خطا!",
+          icon: "error",
+          confirmButtonText:'متوجه شدم'
+        })
+      } )
+    }
   return (
     <>
       <footer className="footer">
@@ -81,7 +128,36 @@ export default function Footer() {
                       آموزش پایتون
                     </a>
                   </div>
+                  <div className="col-6">
 
+                    <Link to="/contact" className="footer-widgets__link">
+                      ارتباط با ما
+                    </Link>
+                  </div>
+                <div class="col-12">
+                  <span class="footer-widgets__title">اشتراک در خبرنامه</span>
+                  <span class="footer-widgets__text text-center d-block">
+                    جهت اطلاع از آخرین اخبار و تخفیف های سایت مشترک شوید!
+                  </span>
+                  <form action="#" class="footer-widgets__form">
+                    <Input
+                      element="input"
+                      id="email"
+                      type="text"
+                      className="footer-widgets__input"
+                      placeholder="ایمیل خود را وارد کنید."
+                      onInputHandler={onInputHandler}
+                      validations={[emailValidator()]}
+                    />
+                    <button
+                      type="submit"
+                      class="footer-widgets__btn"
+                      onClick={addNewEmail}
+                    >
+                      عضویت
+                    </button>
+                  </form>
+                </div>                  
                   </div>
               </FooterItem>
             </div>
