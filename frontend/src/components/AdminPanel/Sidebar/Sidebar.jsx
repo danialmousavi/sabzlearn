@@ -1,5 +1,6 @@
 import React from 'react'
 import'./Sidebar.css'
+import {Link} from 'react-router-dom'
 export default function Sidebar() {
   return (
     <div id="sidebar" class="col-2">
@@ -17,39 +18,39 @@ export default function Sidebar() {
       <div class="sidebar-menu">
         <ul>
           <li class="active-menu">
-            <a href="#">
+            <Link to="/p-admin">
               <span>صفحه اصلی</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="courses">
               <span>دوره ها</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="menus">
               <span>منو ها</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="articles">
               <span>مقاله ها</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="users">
               <span>کاربران</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <a to="offs">
               <span>کدهای تخفیف</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <Link to="/categories">
               <span>دسته‌بندی‌ها</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
