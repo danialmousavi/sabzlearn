@@ -23,32 +23,32 @@ export default function Sidebar() {
             </Link>
           </li>
           <li>
-            <Link to="courses">
+            <Link to="/p-admin/courses">
               <span>دوره ها</span>
             </Link>
           </li>
           <li>
-            <Link to="menus">
+            <Link to="/p-admin/menus">
               <span>منو ها</span>
             </Link>
           </li>
           <li>
-            <Link to="articles">
+            <Link to="/p-admin/articles">
               <span>مقاله ها</span>
             </Link>
           </li>
           <li>
-            <Link to="users">
+            <Link to="/p-admin/users">
               <span>کاربران</span>
             </Link>
           </li>
           <li>
-            <a to="offs">
+            <Link to="/p-admin/offs">
               <span>کدهای تخفیف</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <Link to="/categories">
+            <Link to="/p-admin/categories">
               <span>دسته‌بندی‌ها</span>
             </Link>
           </li>

@@ -1,6 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Topbar.css'
 export default function Topbar() {
+  const [adminData,setAdminData]=useState({});
+  useEffect(()=>{
+    const localStorageData=JSON.parse(localStorage.getItem('user'));
+    console.log(localStorageData);
+    
+    fetch('http://localhost:3000/v1/auth/me',{
+      headers:{
+        "Authorization":`Bearer ${localStorageData}`
+      }
+    }).then(res=>res.json()).then(data=>{
+      setAdminData(data);
+      console.log(data);
+      
+    }
+    )
+  },[])
   return (
     <div class="container-fluid">
       <div class="container">
@@ -51,11 +67,11 @@ export default function Topbar() {
             <div class="home-profile">
               <div class="home-profile-image">
                 <a href="#">
-                  <img src="/images/profile.png" alt="" />
+                  <img src={adminData.profile} alt="" />
                 </a>
               </div>
               <div class="home-profile-name">
-                <a href="#">محمدامین سعیدی راد</a>
+                <a href="#">{adminData.name}</a>
               </div>
               <div class="home-profile-icon">
                 <i class="fas fa-angle-down"></i>
