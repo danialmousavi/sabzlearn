@@ -134,12 +134,12 @@ export default function Footer() {
                       ارتباط با ما
                     </Link>
                   </div>
-                <div class="col-12">
-                  <span class="footer-widgets__title">اشتراک در خبرنامه</span>
-                  <span class="footer-widgets__text text-center d-block">
+                <div className="col-12">
+                  <span className="footer-widgets__title">اشتراک در خبرنامه</span>
+                  <span className="footer-widgets__text text-center d-block">
                     جهت اطلاع از آخرین اخبار و تخفیف های سایت مشترک شوید!
                   </span>
-                  <form action="#" class="footer-widgets__form">
+                  <form action="#" className="footer-widgets__form">
                     <Input
                       element="input"
                       id="email"
@@ -151,7 +151,7 @@ export default function Footer() {
                     />
                     <button
                       type="submit"
-                      class="footer-widgets__btn"
+                      className="footer-widgets__btn"
                       onClick={addNewEmail}
                     >
                       عضویت

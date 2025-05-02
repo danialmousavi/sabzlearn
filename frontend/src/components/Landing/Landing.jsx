@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react'
 import'./Landing.css'
 import Typewriter from 'typewriter-effect';
 import LandingCouter from '../LandingCounter/LandingCouter';
+import { useNavigate } from 'react-router';
 export default function Landing() {
+  const [searchValue,setSearchValue]=useState('');
+  const navigate=useNavigate()
+  const goToSearchPage=()=>{
+    navigate(`/search/${searchValue}`)
+  }
+  //counter of landing page like number of students
    const [couter,setCounter]=useState(0);
    useEffect(()=>{
     let interval=setInterval(() => {
@@ -13,6 +20,7 @@ export default function Landing() {
     }
     return()=>clearInterval(interval)
    },[couter])
+
   return (
     <section className="landing">
     <div className="container">
@@ -32,8 +40,8 @@ export default function Landing() {
       <h2 className="landing__subtitle">با آکادمی سبزلرن، برنامه نویسی رو با خیال راحت یاد بگیر و پیشرفت کن.
       </h2>
       <div className="landing__searchbar">
-        <input type="text" className="landing__searchbar-input" placeholder="چه چیزی دوست داری یاد بگیری ..." />
-        <button className="landing__searchbar-btn" type="submit">
+        <input type="text" className="landing__searchbar-input" placeholder="چه چیزی دوست داری یاد بگیری ..." onChange={(e)=>setSearchValue(e.target.value)} />
+        <button className="landing__searchbar-btn" type="submit" onClick={goToSearchPage}>
           <i className="fas fa-search landing__searchbar-icon"></i>
         </button>
       </div>
