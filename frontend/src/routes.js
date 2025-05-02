@@ -8,7 +8,11 @@ import Index from "./pages/index/Index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Search from "./pages/Search/Search";
-
+import PanelAdmin from "./pages/AdminPanel/Index"
+import Users from "./pages/AdminPanel/Users/Users";
+import AdminCourses from "./pages/AdminPanel/Courses/Courses";
+import AdminArticles from "./pages/AdminPanel/Articles/Articles";
+import Menus from "./pages/AdminPanel/Menus/Menus";
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -20,6 +24,12 @@ const Routes=[
     {path:'/register',element:<Register/>},
     {path:'/contact',element:<Contact/>},
     {path:'/search/:value',element:<Search/>},
+    {path:'/p-admin/*',element:<PanelAdmin/>, children:[
+        {path:'users',element:<Users/>},
+        {path:'courses',element:<AdminCourses/>},
+        {path:'articles',element:<AdminArticles/>},
+        {path:'menus',element:<Menus/>}
+    ]},
 
 ]
 export default Routes
