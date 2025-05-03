@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './Topbar.css'
 export default function Topbar() {
   const [adminData,setAdminData]=useState({});
+  const [notification,setNotification]=useState([]);
+  const [showNotification,setShowNotification]=useState(false); 
   useEffect(()=>{
     const localStorageData=JSON.parse(localStorage.getItem('user'));
     console.log(localStorageData);
@@ -12,69 +14,51 @@ export default function Topbar() {
       }
     }).then(res=>res.json()).then(data=>{
       setAdminData(data);
+      setNotification(data.notifications);
       console.log(data);
       
     }
     )
   },[])
   return (
-    <div class="container-fluid">
-      <div class="container">
-        <div class="home-header">
-          <div class="home-right">
-            <div class="home-searchbar">
-              <input type="text" class="search-bar" placeholder="جستجو..." />
+    <div className="container-fluid">
+      <div className="container">
+        <div class={`home-header ${showNotification&&"active-modal-notfication"}`}>
+          <div className="home-right">
+            <div className="home-searchbar ">
+              <input type="text" className="search-bar" placeholder="جستجو..." />
             </div>
-            <div class="home-notification">
-              <button type="button">
-                <i class="far fa-bell"></i>
+            <div className="home-notification ">
+              <button type="button" onMouseEnter={()=>setShowNotification(true)}>
+                <i className="far fa-bell"></i>
               </button>
             </div>
-            <div class="home-notification-modal">
-              <ul class="home-notification-modal-list">
-                <li class="home-notification-modal-item">
-                  <span class="home-notification-modal-text">پیغام ها</span>
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="slider round"></span>
-                  </label>
-                </li>
-                <li class="home-notification-modal-item">
-                  <span class="home-notification-modal-text">پیغام ها</span>
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="slider round"></span>
-                  </label>
-                </li>
-                <li class="home-notification-modal-item">
-                  <span class="home-notification-modal-text">پیغام ها</span>
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="slider round"></span>
-                  </label>
-                </li>
-                <li class="home-notification-modal-item">
-                  <span class="home-notification-modal-text">پیغام ها</span>
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="slider round"></span>
-                  </label>
-                </li>
+            <div className="home-notification-modal " onMouseEnter={()=>setShowNotification(true)} onMouseLeave={()=>setShowNotification(false)}>
+              <ul className="home-notification-modal-list ">
+                {notification&&notification.map((item)=>(
+                <li className="home-notification-modal-item" key={item._id}>
+                <span className="home-notification-modal-text">{item.msg}</span>
+                <label className="switch">
+                  <a href="javascript:void(0)">دیدم</a>
+                </label>
+              </li>
+                ))}
+
               </ul>
             </div>
           </div>
-          <div class="home-left">
-            <div class="home-profile">
-              <div class="home-profile-image">
+          <div className="home-left">
+            <div className="home-profile">
+              <div className="home-profile-image">
                 <a href="#">
                   <img src={adminData.profile} alt="" />
                 </a>
               </div>
-              <div class="home-profile-name">
+              <div className="home-profile-name">
                 <a href="#">{adminData.name}</a>
               </div>
-              <div class="home-profile-icon">
-                <i class="fas fa-angle-down"></i>
+              <div className="home-profile-icon">
+                <i className="fas fa-angle-down"></i>
               </div>
             </div>
           </div>
