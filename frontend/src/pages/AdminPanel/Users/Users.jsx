@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import DataTable from '../../../components/AdminPanel/DataTable/DataTable'
+import Swal from 'sweetalert2';
 
 export default function Users() {
-  const [users, setUsers] = useState([])
-  useEffect(()=>{
+  const [users, setUsers] = useState([]);
+  //fetch users from api
+  const fetchUsers=()=>{
     const localStorageData=JSON.parse(localStorage.getItem('user'))
     
     fetch("http://localhost:3000/v1/users",{
@@ -12,11 +14,59 @@ export default function Users() {
       }
     }).then(res=>res.json()).then(data=>{
       setUsers(data);
-      console.log(data);
-      
+
     }
     )
+  }
+  useEffect(()=>{
+      fetchUsers();
   },[])
+  //delete user function
+  const DeleteUser=(id)=>{
+        Swal.fire({
+          title: "حذف کاربر",
+          text: "آیا مطمئن هستید؟",
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonText: "خیر",
+          confirmButtonText:'بله'
+        }).then((result)=>{
+            if(result.isConfirmed){
+              const localStorageData=JSON.parse(localStorage.getItem('user'))
+              fetch(`http://localhost:3000/v1/users/${id}`,{
+                method:"DELETE",
+                headers:{
+                  "Authorization":`Bearer ${localStorageData}`
+                }
+              }).then(res=>{
+                  if(res.ok){
+                    Swal.fire({
+                      title: "تبریک",
+                      text: "کاربر با موفقیت حذف شد",
+                      icon: "success",
+                      confirmButtonText:'تایید'
+                    });
+                    fetchUsers();
+                  } else {
+                    Swal.fire({
+                      title: "متاسفیم ",
+                      text: "کاربر حذف نشد",
+                      icon: "error",
+                      confirmButtonText:'تایید'
+                    });
+                  }
+              }).catch(() => {
+                Swal.fire({
+                  title: "متاسفیم ",
+                  text: "خطایی رخ داد",
+                  icon: "error",
+                  confirmButtonText:'تایید'
+                });
+              })
+              
+            }
+        })
+  }
   return (
     <DataTable title="کاربران">
               <table class="table">
@@ -39,7 +89,7 @@ export default function Users() {
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger delete-btn">
+                <button type="button" class="btn btn-danger delete-btn" onClick={()=>DeleteUser(user._id)}>
                   حذف
                 </button>
               </td>
