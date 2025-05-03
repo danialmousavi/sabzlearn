@@ -4,9 +4,9 @@ export default function Topbar() {
   const [adminData,setAdminData]=useState({});
   const [notification,setNotification]=useState([]);
   const [showNotification,setShowNotification]=useState(false); 
-  useEffect(()=>{
+  //fetch admin data
+  const fetchData=()=>{
     const localStorageData=JSON.parse(localStorage.getItem('user'));
-    console.log(localStorageData);
     
     fetch('http://localhost:3000/v1/auth/me',{
       headers:{
@@ -15,11 +15,25 @@ export default function Topbar() {
     }).then(res=>res.json()).then(data=>{
       setAdminData(data);
       setNotification(data.notifications);
-      console.log(data);
-      
     }
     )
+  }
+  useEffect(()=>{
+    fetchData();
   },[])
+  // change notification status
+  const seeNotification=(id)=>{
+    const localStorageData=JSON.parse(localStorage.getItem('user'));
+    fetch(`http://localhost:3000/v1/notifications/see/${id}`,{
+      method:"PUT",
+      headers:{
+        "Authorization":`Bearer ${localStorageData}`
+      }
+    }).then(res=>res.json().then(data=>{
+      fetchData()
+    })
+    )
+  }
   return (
     <div className="container-fluid">
       <div className="container">
@@ -39,7 +53,7 @@ export default function Topbar() {
                 <li className="home-notification-modal-item" key={item._id}>
                 <span className="home-notification-modal-text">{item.msg}</span>
                 <label className="switch">
-                  <a href="javascript:void(0)">دیدم</a>
+                  <button className='btn btn-success' onClick={()=>seeNotification(item._id)}>دیدم</button>
                 </label>
               </li>
                 ))}
