@@ -33,8 +33,10 @@ function App() {
         setIsLoggedIn(true);
         setUserInfo(userData)
       })
+    }else{
+      setIsLoggedIn(false);
     }
-  },[login])
+  },[login,logOut])
   return (
       <>
       <AuthContext.Provider value={{
