@@ -10,6 +10,7 @@ const commentsRoutes = require("./routes/v1/comment");
 const newslettersRoutes = require("./routes/v1/newsletter");
 const contactRoutes = require("./routes/v1/contact");
 const searchRoutes = require("./routes/v1/search");
+const notificationRoutes = require("./routes/v1/notification");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -35,5 +36,6 @@ app.use("/v1/comments", commentsRoutes);
 app.use("/v1/newsletters", newslettersRoutes);
 app.use("/v1/contact", contactRoutes);
 app.use("/v1/search", searchRoutes);
+app.use("/v1/notifications", notificationRoutes);
 
 module.exports = app;
