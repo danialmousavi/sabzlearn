@@ -10,9 +10,11 @@ export default function Index() {
             <Sidebar/>
           <div className='col-10' id='home'>
             <Topbar/>
+            <div className='container-fluid' id='home-content' >
+            <Outlet/>
+            </div>
           </div>
         </div>
-        <Outlet/>
     </>
   )
 }
