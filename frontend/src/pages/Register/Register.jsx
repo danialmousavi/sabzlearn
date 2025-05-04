@@ -62,8 +62,8 @@ export default function Register() {
       }).then(value=>{
         navigate('/')
       });
+          return res.json(); 
         }
-        return res.json(); 
       }).then(result=>{
         authContext.login(result.user,result.accessToken);
       })      

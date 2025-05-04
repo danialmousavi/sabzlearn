@@ -67,6 +67,44 @@ export default function Users() {
             }
         })
   }
+  const BanUser=(id)=>{
+    const localStorageData=JSON.parse(localStorage.getItem('user'))
+    Swal.fire({
+        title: "بن کاربر",
+        text: "آیا مطمئن هستید؟",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "خیر",
+        confirmButtonText:'بله'
+    }).then(result=>{
+      if(result.isConfirmed){
+        fetch(`http://localhost:3000/v1/users/ban/${id}`,{
+          method:"PUT",
+          headers:{
+            "Authorization":`Bearer ${localStorageData}`
+          }
+        }).then(res=>{
+          if(res.ok){
+            Swal.fire({
+              title: "تبریک",
+              text: "کاربر با موفقیت بن شد",
+              icon: "success",
+              confirmButtonText:'تایید'
+            });
+          } else {
+            Swal.fire({
+              title: "متاسفیم ",
+              text: "کاربر بن نشد",
+              icon: "error",
+              confirmButtonText:'تایید'
+            });
+          }
+    
+        })
+      }
+    })
+
+  }
   return (
     <DataTable title="کاربران">
               <table class="table">
@@ -94,7 +132,7 @@ export default function Users() {
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger delete-btn">
+                <button type="button" class="btn btn-danger delete-btn" onClick={()=>BanUser(user._id)}>
                   بن
                 </button>
               </td>
