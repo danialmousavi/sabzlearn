@@ -14,20 +14,7 @@ function App() {
     setToken(token);
     setIsLoggedIn(true);
     localStorage.setItem("user", JSON.stringify(token));
-
-    // Fetch user data immediately after login
-    fetch('http://localhost:3000/v1/auth/me', {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((userData) => {
-        setUserInfo(userData);
-      })
-      .catch((err) => {
-        console.error("Error fetching user data after login:", err);
-      });
+    setUserInfo(userinfo);
   }, []);
 
   const logOut = useCallback(() => {
@@ -57,7 +44,7 @@ function App() {
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [login, logOut]);
 
   return (
     <>
