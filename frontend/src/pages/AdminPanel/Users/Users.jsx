@@ -183,7 +183,7 @@ export default function Users() {
             </div>
             <form class="form">
               <div class="col-6">
-                <div class="login-form__username">
+                <div class="login-form__username admin-p-inputs">
                   <label class="input-title">نام و نام خانوادگی</label>
                   <Input
                     type="text"
@@ -202,7 +202,7 @@ export default function Users() {
                 </div>
               </div>
               <div class="col-6">
-                <div class="login-form__username">
+                <div class="login-form__username admin-p-inputs">
                   <label class="input-title">نام کاربری</label>
                   <Input
                     type="text"
@@ -221,7 +221,7 @@ export default function Users() {
                 </div>
               </div>
               <div class="col-6">
-                <div class="login-form__username">
+                <div class="login-form__username admin-p-inputs">
                   <label class="input-title">ایمیل</label>
                   <Input
                     type="text"
@@ -241,7 +241,7 @@ export default function Users() {
                 </div>
               </div>
               <div class="col-6">
-                <div class="login-form__username">
+                <div class="login-form__username admin-p-inputs">
                   <label class="input-title">رمز عبور</label>
                   <Input
                     type="text"
@@ -260,7 +260,7 @@ export default function Users() {
                 </div>
               </div>
               <div class="col-6">
-                <div class="login-form__username">
+                <div class="login-form__username admin-p-inputs">
                   <label class="input-title">شماره تلفن</label>
                   <Input
                     type="text"
