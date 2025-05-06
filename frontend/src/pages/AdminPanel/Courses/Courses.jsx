@@ -21,6 +21,7 @@ export default function Courses() {
             <tr>
               <th>شناسه</th>
               <th>عنوان</th>
+              <th>دسته بندی</th>
               <th>مبلغ</th>
               <th>وضعیت برگذاری</th>
               <th>لینک</th>
@@ -34,11 +35,11 @@ export default function Courses() {
             <tr>
               <td>{index+1}</td>
               <td>{course.name}</td>
+              <td>{course.categoryID}</td>
               <td>{course.price==0?'رایگان':course.price}</td>
               <td>{course.isComplete?"تکمیل شده":"درحال برگذاری"}</td>
               <td>{course.shortName}</td>
-              <td>{course.creator.name}</td>
-              <td>{course.support}</td>
+              <td>{course.creator}</td>
 
               <td>
                 <button type="button" class="btn btn-primary edit-btn">
