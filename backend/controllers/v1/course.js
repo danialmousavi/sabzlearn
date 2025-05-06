@@ -5,7 +5,16 @@ const categoryModel = require("../../models/category");
 const courseUserModel = require("../../models/course-user");
 
 exports.create = async (req, res) => {
-  const { name, description, shortName, categoryID, price } = req.body;
+  const {
+    name,
+    description,
+    shortName,
+    categoryID,
+    price,
+    isComplete,
+    support,
+    status,
+  } = req.body;
 
   const course = await courseModel.create({
     name,
@@ -14,8 +23,9 @@ exports.create = async (req, res) => {
     creator: req.user._id,
     categoryID,
     price,
-    isComplete: 0,
-    support: "گروه تلگرامی",
+    isComplete,
+    status,
+    support,
     cover: "/images/courses/fareelancer.png",
   });
 
@@ -30,9 +40,20 @@ exports.getAll = async (req, res) => {
   const courses = await courseModel
     .find()
     .populate("creator", "-password")
+    .populate("categoryID")
+    .lean()
     .sort({ _id: -1 });
 
-  return res.json(courses);
+  let allCourses = [];
+  courses.forEach((course) => {
+    allCourses.push({
+      ...course,
+      categoryID: course.categoryID.title,
+      creator: course.creator.name,
+    });
+  });
+
+  return res.json(allCourses);
 };
 
 exports.getOne = async (req, res) => {
@@ -105,11 +126,23 @@ exports.register = async (req, res) => {
 
 exports.getCategoryCourses = async (req, res) => {
   const { categoryName } = req.params;
-  const category = await categoryModel.find({ name: categoryName })
-  if(category.length) {
-    const categoryCourses = await courseModel.find({ categoryID: category[0]._id })
-    res.json(categoryCourses)
+  const category = await categoryModel.find({ name: categoryName });
+  if (category.length) {
+    const categoryCourses = await courseModel.find({
+      categoryID: category[0]._id,
+    });
+    res.json(categoryCourses);
   } else {
-    res.json([])
+    res.json([]);
   }
+};
+
+exports.remove = async (req, res) => {
+  const deletedCourse = await courseModel.findOneAndRemove({
+    _id: req.params.id,
+  });
+  if (!deletedCourse) {
+    return res.status(404).json({ message: "Course Not Found!" });
+  }
+  return res.json(deletedCourse);
 };

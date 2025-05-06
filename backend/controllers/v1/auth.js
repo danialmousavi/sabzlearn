@@ -3,12 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const userModel = require("../../models/user");
 const courseUserModel = require("../../models/course-user");
+const banUserModel = require("../../models/ban-phone");
 const notificationsModel = require("../../models/notification");
 const registerValidator = require("../../validators/v1/register");
 
 exports.register = async (req, res) => {
-  console.log(req.body);
-
   // const validationResult = registerValidator(req.body);
   // if (validationResult != true) return res.status(422).json(validationResult);
   const { username, password, name, email, phone } = req.body;
@@ -22,6 +21,13 @@ exports.register = async (req, res) => {
   if (isUserExists) {
     return res.status(409).json({
       message: "username or email is duplicate.",
+    });
+  }
+
+  const isUserBan = await banUserModel.find({ phone });
+  if (isUserBan.length) {
+    return res.status(403).json({
+      message: "this phone number ban!"
     });
   }
 
@@ -90,10 +96,9 @@ exports.getMe = async (req, res) => {
 
   for (const adminNotification of adminNotifications) {
     if (adminNotification.see === 0) {
-
       notifications.push({
         msg: adminNotification.msg,
-        _id: adminNotification._id
+        _id: adminNotification._id,
       });
     }
   }

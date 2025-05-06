@@ -22,6 +22,9 @@ router
   .get(courseController.getAll);
 
 router
+  .route("/:id").delete(courseController.remove)
+
+  router
   .route("/:id/sessions")
   .post(isAdminMiddleware, courseController.createSession);
 
