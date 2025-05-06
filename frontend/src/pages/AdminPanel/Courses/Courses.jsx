@@ -26,8 +26,8 @@ export default function Courses() {
               <th>وضعیت برگذاری</th>
               <th>لینک</th>
               <th>مدرس</th>
-              <th>نحوه پشتیبانی</th>
-
+              <th>ویرایش</th>
+              <th>حذف</th>
             </tr>
           </thead>
           <tbody>

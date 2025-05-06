@@ -294,6 +294,10 @@ export default function Users() {
               <th>شناسه</th>
               <th>نام و نام خانوادگی </th>
               <th>ایمیل</th>
+              <th>ویرایش</th>
+              <th>حذف</th>
+              <th>بن</th>
+
             </tr>
           </thead>
           <tbody>
@@ -302,6 +306,7 @@ export default function Users() {
               <td>{index+1}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
+              
               <td>
                 <button type="button" class="btn btn-primary edit-btn">
                   ویرایش
