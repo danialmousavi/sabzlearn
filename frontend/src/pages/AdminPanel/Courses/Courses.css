@@ -1,0 +1,46 @@
+
+  .radios {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .radios div {
+    margin: 0 10px;
+  }
+  .radios div label {
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+  .radios div input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    margin-right: 3px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid #2774f5;
+    width: 15px;
+    height: 15px;
+  }
+  .radios div input:checked {
+    position: relative;
+  }
+  .radios div input:checked::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    background-color: #2774f5;
+    border-radius: 50%;
+  }
