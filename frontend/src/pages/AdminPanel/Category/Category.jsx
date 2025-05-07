@@ -119,6 +119,53 @@ export default function Category() {
       }
     });
   };
+  //edit category
+  const editCategory = (id,title) => {
+    const localStorageData=JSON.parse(localStorage.getItem("user"));
+    Swal.fire({
+      title: "ویرایش دسته بندی",
+      input: "text",
+      inputLabel: "عنوان جدید",
+      inputValue:title,
+      confirmButtonText: "تایید",
+      showCancelButton: true,
+      cancelButtonText: "انصراف",
+    }).then((result)=>{
+      if(result.isConfirmed){
+        const newCategory={
+          title:result.value
+        }
+        fetch(`http://localhost:3000/v1/category/${id}`,{
+          method:"PUT",
+          headers:{
+            "Content-Type":"application/json",
+            Authorization:`Bearer ${localStorageData}`
+          },
+          body:JSON.stringify(newCategory)
+        }).then(res=>{
+          if(res.ok){
+            Swal.fire({
+              title: "تبریک",
+              text: "دسته بندی با موفقیت ویرایش شد",
+              icon: "success",
+              confirmButtonText: "تایید",
+            }).then(()=>{
+              getAllCategoies();
+            })
+          }
+          else{
+            Swal.fire({
+              title: "متاسفیم",
+              text: "دسته بندی ویرایش نشد",
+              icon: "error",
+              confirmButtonText: "تایید",
+            });
+          }
+
+        })      
+      }
+    })
+  }
   return (
     <>
       <div class="container-fluid" id="home-content">
@@ -188,7 +235,7 @@ export default function Category() {
                   <td>{index + 1}</td>
                   <td>{category.title}</td>
                   <td>
-                    <button type="button" class="btn btn-primary edit-btn">
+                    <button type="button" class="btn btn-primary edit-btn"onClick={() => editCategory(category._id,category.title)}>
                       ویرایش
                     </button>
                   </td>
