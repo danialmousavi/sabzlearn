@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import DataTable from '../../../components/AdminPanel/DataTable/DataTable'
 import Swal from 'sweetalert2';
 import './Courses.css'
+import { useForm } from '../../../hooks/useForm';
+import { minValidator, requierdValidator } from '../../../validators/rules';
+import Input from '../../../components/Form/Input';
 export default function Courses() {
   const [Courses,setCourses]=useState([]);
   const getAllCourses=()=>{
@@ -57,6 +60,34 @@ export default function Courses() {
     //CREATE COURSE
     //get categories for selecting category
     const [categories,setCategories]=useState([]);
+    const [selecetedCategory,setSelectedCategory]=useState('');
+    const [courseStatus,setCourseStatus]=useState('presell');
+    const [courseCover,setCourseCover]=useState({});
+      const [formState, onInputHandler] = useForm(
+        {
+          name: {
+            value: "",
+            isValid: false,
+          },
+          price: {
+            value: "",
+            isValid: false,
+          },
+          shortName: {
+            value: "",
+            isValid: false,
+          },
+          description: {
+            value: "",
+            isValid: false,
+          },
+          support: {
+            value: "",
+            isValid: false,
+          },
+        },
+        false
+      );
     useEffect(()=>{
       fetch("http://localhost:3000/v1/category")
       .then((res) => res.json())
@@ -64,9 +95,47 @@ export default function Courses() {
         setCategories(data);
         console.log(data);
       });
-    })
-    const selectCategory=()=>{
-
+    },[])
+    const selectCategory=(e)=>{
+      setSelectedCategory(e.target.value);
+      
+    }
+    const createNewCourse=(e)=>{
+      e.preventDefault();
+      const localStorageData=JSON.parse(localStorage.getItem('user'));
+      let formdata= new FormData();
+      formdata.append('name',formState.inputs.name.value);
+      formdata.append('description',formState.inputs.description.value);
+      formdata.append('shortName',formState.inputs.shortName.value);
+      formdata.append('categoryID',selecetedCategory);
+      formdata.append('price',formState.inputs.price.value);
+      formdata.append('isComplete',courseStatus);
+      formdata.append('support',formState.inputs.support.value);
+      formdata.append('cover',courseCover);
+      fetch('http://localhost:3000/v1/courses',{
+        method:"POST",
+        headers:{
+          "Authorization":`Bearer ${localStorageData}`,
+          "Content-Type": "application/json",
+        },
+        body:formdata,
+      }).then(res=>{
+        if(res.ok){
+          Swal.fire({
+            title:"تبریک",
+            text:"دوره با موفقیت اضافه شد",
+            icon:"success",
+          }).then(res=>{
+            getAllCourses();
+          })
+        }else{
+          Swal.fire({
+            title:"متاسفیم",
+            text:"دوره اضافه نشد",
+            icon:"error",
+          })
+        }
+      })
     }
   return (
     <>
@@ -79,48 +148,86 @@ export default function Courses() {
             <div class="col-6">
               <div class="name input">
                 <label class="input-title">نام محصول</label>
-                <input
+                <Input
                   type="text"
-                  isValid="false"
+                  className="login-form__password-input"
+                  element="input"
+                  onInputHandler={onInputHandler}
+                  id="name"
                   placeholder="لطفا نام محصول را وارد کنید..."
-                />
+                  validations={[minValidator(3)]}
+                />                
                 <span class="error-message text-danger"></span>
               </div>
             </div>
             <div class="col-6">
               <div class="price input">
                 <label class="input-title">قیمت محصول</label>
-                <input
+                <Input
                   type="text"
-                  isValid="false"
+                  className="login-form__password-input"
+                  element="input"
+                  onInputHandler={onInputHandler}
+                  id="price"
                   placeholder="لطفا قیمت محصول را وارد کنید..."
-                />
+                  validations={[requierdValidator()]}
+                />                   
                 <span class="error-message text-danger"></span>
               </div>
             </div>
             <div class="col-6">
               <div class="number input">
-                <label class="input-title">تعداد محصول</label>
-                <input
+                <label class="input-title">نام کوتاه محصول</label>
+                <Input
                   type="text"
-                  isValid="false"
-                  placeholder="لطفا تعداد محصول را وارد کنید..."
-                />
+                  className="login-form__password-input"
+                  element="input"
+                  onInputHandler={onInputHandler}
+                  id="shortName"
+                  placeholder="لطفا نام کوتاه محصول را وارد کنید..."
+                  validations={[minValidator(3)]}
+                />    
                 <span class="error-message text-danger"></span>
               </div>
             </div>
             <div class="col-6">
               <div class="price input">
-                <label class="input-title">قیمت محصول</label>
-                <input
+                <label class="input-title">توضیحات محصول</label>
+                <Input
                   type="text"
-                  isValid="false"
-                  placeholder="لطفا قیمت محصول را وارد کنید..."
-                />
+                  className="login-form__password-input"
+                  element="input"
+                  onInputHandler={onInputHandler}
+                  id="description"
+                  placeholder="لطفا توضیحات محصول را وارد کنید..."
+                  validations={[minValidator(3)]}
+                />   
                 <span class="error-message text-danger"></span>
               </div>
             </div>
             <div class="col-6">
+              <div class="price input">
+                <label class="input-title">پشتیبانی محصول</label>
+                <Input
+                  type="text"
+                  className="login-form__password-input"
+                  element="input"
+                  onInputHandler={onInputHandler}
+                  id="support"
+                  placeholder="لطفا نحوه پشتیبانی محصول را وارد کنید..."
+                  validations={[minValidator(3)]}
+                />   
+                <span class="error-message text-danger"></span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="file">
+                <label class="input-title">عکس محصول</label>
+                <input type="file" id="file" className="login-form__password-input" onChange={e=>console.log(e.target.files[0])
+                }/>
+              </div>
+            </div>
+            <div class="col-12">
               <div class="number input">
                 <label class="input-title">دسته‌بندی دوره</label>
                 <select onChange={selectCategory}>
@@ -131,45 +238,7 @@ export default function Courses() {
                 <span class="error-message text-danger"></span>
               </div>
             </div>
-            <div class="col-6">
-              <div class="file">
-                <label class="input-title">عکس محصول</label>
-                <input type="file" id="file" />
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="bottom-form">
-                <div class="condition">
-                  <label class="input-title">موجودی</label>
-                  <div class="radios">
-                    <div class="available">
-                      <label>
-                        <span>موجود</span>
-                        <input
-                          type="radio"
-                          value="avalibe"
-                          name="condition"
-                          checked
-                        />
-                      </label>
-                    </div>
-                    <div class="unavailable">
-                      <label>
-                        <span>ناموجود</span>
-                        <input
-                          type="radio"
-                          value="unavailable"
-                          name="condition"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="submit-btn">
-                  <input type="submit" value="افزودن" />
-                </div>
-              </div>
-            </div>
+
             <div class="col-6">
               <div class="presell">
                 <label class="input-title">وضعیت دوره</label>
@@ -181,18 +250,30 @@ export default function Courses() {
                         type="radio"
                         value="presell"
                         name="presell"
-                        checked
+                        checked={courseStatus === "presell"}
+                        onChange={(e)=>setCourseStatus(e.target.value)}
                       />
                     </label>
                   </div>
                   <div class="presell-false">
                     <label>
                       <span>در حال برگزاری</span>
-                      <input type="radio" value="onperforming" name="presell" />
+                      <input
+                        type="radio"
+                        value="start"
+                        name="presell"
+                        checked={courseStatus === "start"}
+                        onChange={(e)=>setCourseStatus(e.target.value)}
+                      />
                     </label>
                   </div>
                 </div>
               </div>
+            </div>
+            <div className='col-6'>
+            <div class="submit-btn btn" onClick={createNewCourse}>
+                  <input type="submit" value="افزودن" />
+                </div>
             </div>
           </form>
         </div>

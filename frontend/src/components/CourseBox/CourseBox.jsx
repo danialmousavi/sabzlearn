@@ -22,7 +22,7 @@ export default function CourseBox(props) {
                     <div className="course-box__rating-teacher">
                       <div className="course-box__teacher">
                         <i className="fas fa-chalkboard-teacher course-box__teacher-icon"></i>
-                        <a href="#" className="course-box__teacher-link">رضا دولتی</a>
+                        <a href="#" className="course-box__teacher-link">{props.creator}</a>
                       </div>
                       <div className="course-box__rating">
                         <img src="/images/svgs/star.svg" alt="rating" className="course-box__star"/>
