@@ -101,41 +101,27 @@ export default function Courses() {
       
     }
     const createNewCourse=(e)=>{
-      e.preventDefault();
-      const localStorageData=JSON.parse(localStorage.getItem('user'));
-      let formdata= new FormData();
-      formdata.append('name',formState.inputs.name.value);
-      formdata.append('description',formState.inputs.description.value);
-      formdata.append('shortName',formState.inputs.shortName.value);
-      formdata.append('categoryID',selecetedCategory);
-      formdata.append('price',formState.inputs.price.value);
-      formdata.append('isComplete',courseStatus);
-      formdata.append('support',formState.inputs.support.value);
-      formdata.append('cover',courseCover);
-      fetch('http://localhost:3000/v1/courses',{
-        method:"POST",
-        headers:{
-          "Authorization":`Bearer ${localStorageData}`,
-          "Content-Type": "application/json",
-        },
-        body:formdata,
-      }).then(res=>{
-        if(res.ok){
-          Swal.fire({
-            title:"تبریک",
-            text:"دوره با موفقیت اضافه شد",
-            icon:"success",
-          }).then(res=>{
-            getAllCourses();
-          })
-        }else{
-          Swal.fire({
-            title:"متاسفیم",
-            text:"دوره اضافه نشد",
-            icon:"error",
-          })
-        }
-      })
+    e.preventDefault();
+    const localStorageData = JSON.parse(localStorage.getItem('user'))
+    let formData = new FormData();
+    formData.append('name', formState.inputs.name.value)
+    formData.append('description', formState.inputs.description.value)
+    formData.append('shortName', formState.inputs.shortName.value)
+    formData.append('categoryID', selecetedCategory)
+    formData.append('price', formState.inputs.price.value)
+    formData.append('support', formState.inputs.support.value)
+    formData.append('status', courseStatus)
+    formData.append('cover', courseCover)
+
+    fetch(`http://localhost:3000/v1/courses`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorageData}`
+      },
+      body: formData
+    }).then(res => {
+      console.log(res);
+    })
     }
   return (
     <>

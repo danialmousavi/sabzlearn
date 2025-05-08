@@ -36,3 +36,13 @@ exports.getOne = async (req, res) => {
 
   res.json(article);
 };
+
+exports.remove = async (req, res) => {
+  const deletedArticle = await articleModel.findOneAndRemove({
+    _id: req.params.id,
+  });
+  if (!deletedArticle) {
+    return res.status(404).json({ message: "Article Not Found!" });
+  }
+  return res.json(deletedArticle);
+};

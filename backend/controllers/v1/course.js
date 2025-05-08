@@ -11,7 +11,6 @@ exports.create = async (req, res) => {
     shortName,
     categoryID,
     price,
-    isComplete,
     support,
     status,
   } = req.body;
@@ -23,10 +22,10 @@ exports.create = async (req, res) => {
     creator: req.user._id,
     categoryID,
     price,
-    isComplete,
+    isComplete: 0,
     status,
     support,
-    cover: "/images/courses/fareelancer.png",
+    cover: req.file.filename
   });
 
   const populatedCourse = await courseModel
