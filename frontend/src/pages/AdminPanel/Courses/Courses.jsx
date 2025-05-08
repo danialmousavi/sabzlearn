@@ -18,7 +18,7 @@ export default function Courses() {
   useEffect(()=>{
     getAllCourses();
   },[])
-  console.log(Courses);
+  // console.log(Courses);
     //delete category
     const deleteCourse=(id)=>{
     const localStorageData=JSON.parse(localStorage.getItem('user'));
@@ -93,7 +93,7 @@ export default function Courses() {
       .then((res) => res.json())
       .then((data) => {
         setCategories(data);
-        console.log(data);
+        // console.log(data);
       });
     },[])
     const selectCategory=(e)=>{
@@ -112,7 +112,7 @@ export default function Courses() {
     formData.append('support', formState.inputs.support.value)
     formData.append('status', courseStatus)
     formData.append('cover', courseCover)
-
+      // console.log([...formData.entries()]);
     fetch(`http://localhost:3000/v1/courses`, {
       method: 'POST',
       headers: {
@@ -141,7 +141,7 @@ export default function Courses() {
                   onInputHandler={onInputHandler}
                   id="name"
                   placeholder="لطفا نام محصول را وارد کنید..."
-                  validations={[minValidator(3)]}
+                  validations={[minValidator(5)]}
                 />                
                 <span class="error-message text-danger"></span>
               </div>
@@ -156,7 +156,7 @@ export default function Courses() {
                   onInputHandler={onInputHandler}
                   id="price"
                   placeholder="لطفا قیمت محصول را وارد کنید..."
-                  validations={[requierdValidator()]}
+                  validations={[minValidator(5)]}
                 />                   
                 <span class="error-message text-danger"></span>
               </div>
@@ -171,7 +171,7 @@ export default function Courses() {
                   onInputHandler={onInputHandler}
                   id="shortName"
                   placeholder="لطفا نام کوتاه محصول را وارد کنید..."
-                  validations={[minValidator(3)]}
+                  validations={[minValidator(5)]}
                 />    
                 <span class="error-message text-danger"></span>
               </div>
@@ -186,7 +186,7 @@ export default function Courses() {
                   onInputHandler={onInputHandler}
                   id="description"
                   placeholder="لطفا توضیحات محصول را وارد کنید..."
-                  validations={[minValidator(3)]}
+                  validations={[minValidator(5)]}
                 />   
                 <span class="error-message text-danger"></span>
               </div>
@@ -201,7 +201,7 @@ export default function Courses() {
                   onInputHandler={onInputHandler}
                   id="support"
                   placeholder="لطفا نحوه پشتیبانی محصول را وارد کنید..."
-                  validations={[minValidator(3)]}
+                  validations={[minValidator(5)]}
                 />   
                 <span class="error-message text-danger"></span>
               </div>
@@ -209,8 +209,7 @@ export default function Courses() {
             <div class="col-6">
               <div class="file">
                 <label class="input-title">عکس محصول</label>
-                <input type="file" id="file" className="login-form__password-input" onChange={e=>console.log(e.target.files[0])
-                }/>
+                <input type="file" id="file" className="login-form__password-input" onChange={e=>setCourseCover(e.target.files[0])}/>
               </div>
             </div>
             <div class="col-12">
