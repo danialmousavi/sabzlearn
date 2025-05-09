@@ -18,7 +18,7 @@ exports.asnwer = async (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "sabzlearnirrrr@gmail.com",
+      user: "sabzlearnir@gmail.com",
       // pass: "h z v g l t m f l s y v z p h q",
       pass: "r t f p n x v q j x x o p x a o",
     },
@@ -39,3 +39,13 @@ exports.asnwer = async (req, res) => {
     }
   });
 };
+
+exports.remove = async (req, res) => {
+  const deletedContact = await contactModel.findOneAndRemove({
+    _id: req.params.id,
+  });
+  if (!deletedContact) {
+    return res.status(404).json({ message: "Contact Not Found!" });
+  }
+  return res.json(deletedContact);
+}

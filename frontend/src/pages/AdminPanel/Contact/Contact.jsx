@@ -5,11 +5,14 @@ import Swal from 'sweetalert2';
 export default function Contact() {
     const [contacts,setContacts]=useState([]);
     useEffect(()=>{
-        fetch('http://localhost:3000/v1/contact').then(res=>res.json()).then(data=>{
+      getAllContacts();
+    },[])
+    const getAllContacts=()=>{
+            fetch('http://localhost:3000/v1/contact').then(res=>res.json()).then(data=>{
             console.log(data);
             setContacts(data);
         })
-    },[])
+    }
     // Function to show the contact body in a modal or alert
     const showConatactBody=(body)=>{
         Swal.fire({
@@ -52,6 +55,41 @@ export default function Contact() {
         })
       })
     }
+    //delete contact 
+    const deleteContact=(contactId)=>{
+    const localStorageData=JSON.parse(localStorage.getItem("user"));
+      Swal.fire({
+        title:"آیا از حذف مطمن هستید؟",
+        icon:"question",
+        confirmButtonText:"بله",
+        showConfirmButton:true,
+        cancelButtonText:"خیر",
+        showCancelButton:true
+      }).then(result=>{
+        if(result.isConfirmed){
+          fetch(`http://localhost:3000/v1/contact/${contactId}`,{
+            method:"DELETE",
+            headers:{
+               Authorization:`Bearer ${localStorageData}`,
+            }
+          }).then(res=>{
+            if(res.ok){
+              Swal.fire({
+                title:"پیام با موفقیت حذف شذ",
+                icon:"success"
+              }).then(()=>{
+                getAllContacts();
+              })
+            }else{
+              Swal.fire({
+                title:"متاسفیم پیغام حذف نشد",
+                icon:"error"
+              })
+            }
+          })
+        }
+      })
+    }
   return (
     <>
      <DataTable title="پیغام ها">
@@ -63,7 +101,6 @@ export default function Contact() {
               <th>ایمیل</th>
               <th>شماره تماس</th>
               <th>مشاهده</th>
-              <th>ویرایش</th>
               <th>پاسخ</th>
               <th>حذف</th>
             </tr>
@@ -80,18 +117,14 @@ export default function Contact() {
                   مشاهده
                 </button>
               </td>
-              <td>
-                <button type="button" class="btn btn-primary edit-btn">
-                  ویرایش
-                </button>
-              </td>
+
               <td>
                 <button type="button" class="btn btn-primary edit-btn" onClick={()=>answerContact(contact.email)}>
                   پاسخ
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger delete-btn"  >
+                <button type="button" class="btn btn-danger delete-btn"  onClick={()=>deleteContact(contact._id)}>
                   حذف
                 </button>
               </td>

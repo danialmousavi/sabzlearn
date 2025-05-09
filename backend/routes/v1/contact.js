@@ -7,6 +7,7 @@ const isAdminMiddleware = require("../../middlewares/isAdmin");
 const router = express.Router();
 
 router.route("/").get(controller.getAll).post(controller.create);
+router.route("/:id").delete(controller.remove);
 router
   .route("/answer")
   .post(authenticatedMiddleware, isAdminMiddleware, controller.asnwer);
