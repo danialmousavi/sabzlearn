@@ -17,6 +17,41 @@ export default function Contact() {
             confirmButtonText: 'بستن'
         })
     }
+    const answerContact=(contactEmail)=>{
+    const localStorageData=JSON.parse(localStorage.getItem("user"));
+      
+      Swal.fire({
+        title:"پاسخ به کاربر",
+        input: "text",
+        inputPlaceholder: "پاسخ خود را بنویسید",
+        
+      }).then(result=>{
+        const answerToUser={
+          email:contactEmail,
+          answer:result.value
+        }
+        fetch('http://localhost:3000/v1/contact/answer',{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json",
+            Authorization:`Bearer ${localStorageData}`
+          },
+          body:JSON.stringify(answerToUser)
+        }).then(res=>{
+          if(res.ok){
+            Swal.fire({
+              title:"تبریک پیام شما با موفقیت ارسال شد",
+              icon:"success"
+            })
+          }else{
+            Swal.fire({
+              title:"متاسفیم پیام شما با  ارسال نشد",
+              icon:"error"
+            })
+          }
+        })
+      })
+    }
   return (
     <>
      <DataTable title="پیغام ها">
@@ -29,6 +64,7 @@ export default function Contact() {
               <th>شماره تماس</th>
               <th>مشاهده</th>
               <th>ویرایش</th>
+              <th>پاسخ</th>
               <th>حذف</th>
             </tr>
           </thead>
@@ -47,6 +83,11 @@ export default function Contact() {
               <td>
                 <button type="button" class="btn btn-primary edit-btn">
                   ویرایش
+                </button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-primary edit-btn" onClick={()=>answerContact(contact.email)}>
+                  پاسخ
                 </button>
               </td>
               <td>
