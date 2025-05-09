@@ -18,7 +18,11 @@ export default function CategoryInfo() {
   useEffect(() => {
     fetch(`http://localhost:3000/v1/courses/category/${categoryName}`)
       .then((res) => res.json())
-      .then((data) => setCourses(data));
+      .then((data) => {
+        setCourses(data);
+        console.log(data);
+        
+      });
   }, [categoryName]);
   useEffect(() => {
     switch (status) {
@@ -193,7 +197,7 @@ export default function CategoryInfo() {
                                     to={`/course-info/${course.shortName}`}
                                   >
                                     <img
-                                      src={course.cover}
+                                      src={`http://localhost:3000/courses/covers/${course.cover}`}
                                       class="course__box-right-img"
                                     />
                                   </Link>

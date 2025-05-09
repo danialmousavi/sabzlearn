@@ -120,8 +120,24 @@ export default function Courses() {
       },
       body: formData
     }).then(res => {
-      console.log(res);
-    })
+      if(res.ok){
+        Swal.fire({
+          title:"تبریک",
+          text:"دوره با موفقیت ایجاد شد",
+          icon:"success",
+        })
+        .then(()=>{
+          getAllCourses();
+        })
+    }else{
+      Swal.fire({
+        title:"متاسفیم",
+        text:"دوره ایجاد نشد",
+        icon:"error",
+      })
+    }
+  }
+  )
     }
   return (
     <>

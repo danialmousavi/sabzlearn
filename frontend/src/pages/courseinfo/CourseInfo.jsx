@@ -126,7 +126,7 @@ export default function CourseInfo() {
 
             <div className="col-6">
               <video
-                poster={courseDetails.cover}
+                poster={`http://localhost:3000/courses/covers/${courseDetails.cover}`}
                 className="course-info__video"
                 controls
               ></video>
