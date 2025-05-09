@@ -96,9 +96,9 @@ export default function Courses() {
         // console.log(data);
       });
     },[])
+    //option of select category change it will be store in selecetedCategory state
     const selectCategory=(e)=>{
       setSelectedCategory(e.target.value);
-      
     }
     const createNewCourse=(e)=>{
     e.preventDefault();
@@ -232,6 +232,7 @@ export default function Courses() {
               <div class="number input">
                 <label class="input-title">دسته‌بندی دوره</label>
                 <select onChange={selectCategory}>
+                <option value=''></option>
                   {categories.map((category) => (
                     <option value={category._id}>{category.title}</option>
                   ))}
