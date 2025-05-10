@@ -64,7 +64,7 @@ export default function Articles() {
   const [articleBody,setArticleBody]=useState('');
     const [formState, onInputHandler] = useForm(
       {
-        name: {
+      title: {
           value: "",
           isValid: false,
         },
@@ -84,12 +84,12 @@ export default function Articles() {
       e.preventDefault();
      const localStorageData=JSON.parse(localStorage.getItem("user"));
       let formData=new FormData();
-      formData.append("title",formState.inputs.name.value);
+      formData.append("title",formState.inputs.title.value);
       formData.append("description",formState.inputs.description.value);
+      formData.append("body",articleBody);
       formData.append("shortName",formState.inputs.shortName.value);
       formData.append("categoryID",articleCategory);
       formData.append("cover",ArticleCover);
-      formData.append("body",articleBody);
       fetch('http://localhost:3000/v1/articles',{
         method:"POST",
         headers:{
@@ -106,7 +106,7 @@ export default function Articles() {
           })
         }else{
           Swal.fire({
-            title:"مقاله با ایجاد نشد",
+            title:"مقاله ایجاد نشد",
             icon:"error"
           })
         }

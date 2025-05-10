@@ -64,7 +64,7 @@ export default function ArticleInfo() {
                     <span className="article-header__text">  2.14k بازدید</span>
                   </div>
                 </div>
-                <img src={articleData.cover} alt="Article Cover" className="article__banner" />
+                <img src={`http://localhost:3000/courses/covers/${articleData.cover}`} alt="Article Cover" className="article__banner" />
 
                 <div className="article__score">
                   <div className="article__score-icons">
