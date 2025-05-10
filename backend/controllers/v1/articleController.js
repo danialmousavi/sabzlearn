@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     body,
     creator: req.user._id,
     categoryID,
-    cover: "/images/blog/3.jpg",
+    cover: req.file.filename
   });
 
   const populatedCourse = await articleModel
@@ -22,7 +22,7 @@ exports.create = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-  const articles = await articleModel.find().populate("creator", "-password");
+  const articles = await articleModel.find().populate("creator", "-password").sort({ _id: -1 });
 
   return res.json(articles);
 };

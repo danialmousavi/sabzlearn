@@ -76,13 +76,42 @@ export default function Articles() {
           value: "",
           isValid: false,
         },
-        support: {
-          value: "",
-          isValid: false,
-        },
+
       },
       false
     );
+    const CreateArticle=(e)=>{
+      e.preventDefault();
+     const localStorageData=JSON.parse(localStorage.getItem("user"));
+      let formData=new FormData();
+      formData.append("title",formState.inputs.name.value);
+      formData.append("description",formState.inputs.description.value);
+      formData.append("shortName",formState.inputs.shortName.value);
+      formData.append("categoryID",articleCategory);
+      formData.append("cover",ArticleCover);
+      formData.append("body",articleBody);
+      fetch('http://localhost:3000/v1/articles',{
+        method:"POST",
+        headers:{
+         Authorization:`Bearer ${localStorageData}`,
+        },
+        body:formData
+      }).then(res=>{
+        if(res.ok){
+          Swal.fire({
+            title:"مقاله با موفقیت ایجاد شد",
+            icon:"success"
+          }).then(()=>{
+            getAllArticles();
+          })
+        }else{
+          Swal.fire({
+            title:"مقاله با ایجاد نشد",
+            icon:"error"
+          })
+        }
+      })
+    }
   return (
     <>
       <div class="container-fluid" id="home-content">
@@ -183,7 +212,7 @@ export default function Articles() {
             </div>
             <div class="col-12">
               <div class="bottom-form">
-                <div class="submit-btn">
+                <div class="submit-btn" onClick={CreateArticle}>
                   <input type="submit" value="افزودن" />
                 </div>
               </div>
