@@ -6,6 +6,8 @@ import Footer from "../../components/Footer/Footer";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import CommentsTextArea from "../../components/CommentsTextArea/CommentsTextArea";
 import { useParams } from "react-router";
+import DOMPurify from 'dompurify';
+
 export default function ArticleInfo() {
   const [articleData,setArticleData] = React.useState([]);
   const [categoryID,setCategoryID] = React.useState([]);
@@ -64,7 +66,7 @@ export default function ArticleInfo() {
                     <span className="article-header__text">  2.14k بازدید</span>
                   </div>
                 </div>
-                <img src={`http://localhost:3000/courses/covers/${articleData.cover}`} alt="Article Cover" className="article__banner" />
+                <img src={`http://localhost:3000/courses/covers/${articleData.cover }`} alt="Article Cover" className="article__banner" />
 
                 <div className="article__score">
                   <div className="article__score-icons">
@@ -77,53 +79,9 @@ export default function ArticleInfo() {
                   <span className="article__score-text">4.2/5 - (5 امتیاز)</span>
                 </div>
 
-                <p className="article__paragraph paragraph">
-                  {articleData.body}
-                </p>
+                  <div className="article-section" dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(articleData.body)}}>
 
-                <div className="article-read">
-                  <span className="article-read__title">آنچه در این مقاله خواهید خواند</span>
-                  <ul className="article-read__list">
-                    <li className="article-read__item">
-                      <a href="#" className="article-read__link">معرفی بهترین سایت ‌های آموزش جاوا اسکریپت:</a>
-                    </li>
-                    <li className="article-read__item">
-                      <a href="#" className="article-read__link">یک راه آسان‌تر، دوره‌ های جاوا اسکریپت آکادمی سبزلرن!</a>
-                    </li>
-                    <li className="article-read__item">
-                      <a href="#" className="article-read__link">ثبت نام در دوره‌ های جاوا اسکریپت سبزلرن:</a>
-                    </li>
-                  </ul>
                 </div>
-
-                <img src="/images/blog/2.jpg" alt="Article Image" className="article__seconadary-banner" />
-                <div className="article-section">
-                  <h2 className="article-section__title">
-                    {articleData.description}
-                  </h2>
-                  <p className="paragraph article-section__text">
-                    {articleData.body}
-                  </p>
-                  <img src="/images/blog/4.png" alt="article body img" className="article-section__img" />
-                </div>
-                <div className="article-section">
-                  <h2 className="article-section__title">
-                    معرفی بهترین سایت ‌های آموزش جاوا اسکریپت:
-                  </h2>
-                  <p className="paragraph article-section__text">
-                    توجه داشته باشید که تمام وب سایت‌هایی که به عنوان بهترین سایت آموزش جاوا اسکریپت در ادامه معرفی می‌کنیم، بین‌المللی هستند و منابع موجود در آن‌ها به زبان انگلیسی است. در نتیجه شما باید یا تسلط متوسط و حداقلی به زبان انگلیسی داشته باشید و یا اینکه با استفاده از گوگل ترنسلیت منابع موجود را ترجمه کرده و از آن‌ها استفاده کنید. به همین دلیل در انتهای محتوا به شما خواهیم گفت که راه آسان دیگری برای یادگیری زبان جاوا اسکریپت وجود دارد که شما بتوانید به واسطه آن به صورت رایگان و به زبان فارسی این زبان را یاد بگیرید.
-                  </p>
-                </div>
-                <div className="article-section">
-                  <h2 className="article-section__title">
-                    معرفی بهترین سایت ‌های آموزش جاوا اسکریپت:
-                  </h2>
-                  <p className="paragraph article-section__text">
-                    توجه داشته باشید که تمام وب سایت‌هایی که به عنوان بهترین سایت آموزش جاوا اسکریپت در ادامه معرفی می‌کنیم، بین‌المللی هستند و منابع موجود در آن‌ها به زبان انگلیسی است. در نتیجه شما باید یا تسلط متوسط و حداقلی به زبان انگلیسی داشته باشید و یا اینکه با استفاده از گوگل ترنسلیت منابع موجود را ترجمه کرده و از آن‌ها استفاده کنید. به همین دلیل در انتهای محتوا به شما خواهیم گفت که راه آسان دیگری برای یادگیری زبان جاوا اسکریپت وجود دارد که شما بتوانید به واسطه آن به صورت رایگان و به زبان فارسی این زبان را یاد بگیرید.
-                  </p>
-                  <img src="/images/blog/3.jpg" alt="article body img" className="article-section__img" />
-                </div>
-
                 <div className="article-social-media">
                   <span className="article-social-media__text">اشتراک گذاری :</span>
                   <a href="#" className="article-social-media__link">

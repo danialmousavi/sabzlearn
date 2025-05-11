@@ -22,7 +22,9 @@
 .article-header__item {
     margin-left: 2rem;
 }
-
+.article__paragraph{
+    margin-top: 20px;
+}
 .article-header__icon {
     font-size: 1.7rem;
     color: #c7c7c7;
@@ -35,6 +37,7 @@
 
 .article__banner {
     margin-top: 4rem;
+    width:100% ;
 }
 
 .article__score {
@@ -87,14 +90,14 @@
     margin: 5rem 0;
 }
 
-.article-section__title {
+.article-section h2,h1,h3,h4,h5 {
     font-size: 2.4rem;
     color: #008c25;
     font-weight: bold;
     line-height: 1.2;
 }
 
-.article-section__text {
+.article-section p {
     margin: 2rem 0;
 }
 
