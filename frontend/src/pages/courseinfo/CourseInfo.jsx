@@ -293,7 +293,7 @@ export default function CourseInfo() {
                         </div>
                         <div className="introduction__accordion-left">
                           <span className="introduction__accordion-time">
-                            18:34
+                            {session.time}
                           </span>
                         </div>
                       </Accordion.Body>

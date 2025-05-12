@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Input from '../../../components/Form/Input'
 import { minValidator } from '../../../validators/rules'
 import { useForm } from '../../../hooks/useForm'
+import Swal from 'sweetalert2';
 export default function Sessions() {
     const [courses,setCourses]=useState([]);
     const [sessionCourse,setSessionCourse]=useState('-1');
+    const [sessionVideo,setSessionVideo]=useState({});
     const [formState,onInputHandler]=useForm({
         title:{
           value: "",
@@ -25,6 +27,46 @@ export default function Sessions() {
       .then((res) => res.json())
       .then((data) => setCourses(data));
     },[])
+    const createSession=(e)=>{
+      e.preventDefault();
+    const localStorageData = JSON.parse(localStorage.getItem("user"));
+    const formData=new FormData();
+    formData.append("title",formState.inputs.title.value);
+    formData.append("time",formState.inputs.time.value);
+    formData.append("video",sessionVideo);
+ 
+      if(sessionCourse!=='-1'){
+              fetch(`http://localhost:3000/v1/courses/${sessionCourse}/sessions`,{
+        method:"POST",
+        headers:{
+        Authorization: `Bearer ${localStorageData}`,
+
+        },
+        body:formData
+      }).then(res=>{
+        if(res.ok){
+          Swal.fire({
+            title:"تبریک",
+            text:"ویدیوی دوره با موفقیت بارگذاری شد",
+            icon:"success"
+          })
+        }else{
+          Swal.fire({
+            title:"متاسفیم",
+            text:"ویدیوی دوره بارگذاری نشد",
+            icon:"error"
+          })
+        }
+      }
+      )
+      }else{
+        Swal.fire({
+          title:"خطا",
+          text:"لطفا دوره مورد نظر را انتخاب کنید",
+          icon:"warning"
+        })
+      }
+    }
   return (
           <div class="container-fluid" id="home-content">
             <div class="container">
@@ -77,11 +119,20 @@ export default function Sessions() {
                     <span class="error-message text-danger"></span>
                   </div>
                 </div>
+                <div class="col-6">
+                  <div class="price input">
+                    <label class="input-title" style={{ display: "block" }}>
+                      انتخاب ویدیو
+                    </label>
+                      <input type="file" onChange={event=>setSessionVideo(event.target.files[0])} />
+                    <span class="error-message text-danger"></span>
+                  </div>
+                </div>
     
                 <div class="col-12">
                   <div class="bottom-form">
                     <div class="submit-btn">
-                      <input type="submit" value="افزودن" />
+                      <input type="submit" value="افزودن" onClick={createSession}/>
                     </div>
                   </div>
                 </div>
