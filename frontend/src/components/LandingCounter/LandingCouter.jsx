@@ -5,7 +5,7 @@ export default function LandingCouter({landCouter}) {
        useEffect(()=>{
         let interval=setInterval(() => {
           setCounter(prevCount=>prevCount+1);
-        }, 1);
+        }, 10);
         if(couter===landCouter){
           clearInterval(interval)
         }

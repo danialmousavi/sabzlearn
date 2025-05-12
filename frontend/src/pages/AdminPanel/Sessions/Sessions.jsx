@@ -38,7 +38,7 @@ export default function Sessions() {
     formData.append("title",formState.inputs.title.value);
     formData.append("time",formState.inputs.time.value);
     formData.append("video",sessionVideo);
- 
+    formData.append("free",0)
       if(sessionCourse!=='-1'){
               fetch(`http://localhost:3000/v1/courses/${sessionCourse}/sessions`,{
         method:"POST",
@@ -53,6 +53,8 @@ export default function Sessions() {
             title:"تبریک",
             text:"ویدیوی دوره با موفقیت بارگذاری شد",
             icon:"success"
+          }).then(()=>{
+            getAllSessions();
           })
         }else{
           Swal.fire({
