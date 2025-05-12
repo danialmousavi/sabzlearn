@@ -15,6 +15,7 @@ import AdminArticles from "./pages/AdminPanel/Articles/Articles";
 import Menus from "./pages/AdminPanel/Menus/Menus";
 import AdminCategory from "./pages/AdminPanel/Category/Category";
 import AdminContact from"./pages/AdminPanel/Contact/Contact"
+import Sessions from "./pages/AdminPanel/Sessions/Sessions";
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -32,7 +33,8 @@ const Routes=[
         {path:'articles',element:<AdminArticles/>},
         {path:'menus',element:<Menus/>},
         {path:'categories',element:<AdminCategory/>},
-        {path:'contacts',element:<AdminContact/>}
+        {path:'contacts',element:<AdminContact/>},
+        {path:'sessions',element:<Sessions/>}
 
 
     ]},

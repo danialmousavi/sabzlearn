@@ -74,6 +74,11 @@ export default function Sidebar() {
               <span>پیغام ها</span>
             </Link>
           </li>
+          <li>
+            <Link to="/p-admin/sessions">
+              <span>جلسات</span>
+            </Link>
+          </li>          
           <li onClick={handleLogout}>
             <Link >
               <span>خروج از حساب کاربری</span>
