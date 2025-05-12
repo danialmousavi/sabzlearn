@@ -3,10 +3,12 @@ import Input from '../../../components/Form/Input'
 import { minValidator } from '../../../validators/rules'
 import { useForm } from '../../../hooks/useForm'
 import Swal from 'sweetalert2';
+import DataTable from '../../../components/AdminPanel/DataTable/DataTable';
 export default function Sessions() {
     const [courses,setCourses]=useState([]);
     const [sessionCourse,setSessionCourse]=useState('-1');
     const [sessionVideo,setSessionVideo]=useState({});
+    const [sessions,setSessons]=useState([]);
     const [formState,onInputHandler]=useForm({
         title:{
           value: "",
@@ -26,6 +28,8 @@ export default function Sessions() {
     })
       .then((res) => res.json())
       .then((data) => setCourses(data));
+      //get sessions
+      getAllSessions();
     },[])
     const createSession=(e)=>{
       e.preventDefault();
@@ -67,8 +71,17 @@ export default function Sessions() {
         })
       }
     }
+    //show sessions that created
+    const getAllSessions=()=>{
+      fetch('http://localhost:3000/v1/courses/sessions').then(res=>res.json()).then(data=>{
+        setSessons(data);
+        console.log(data);
+        
+      });
+    }
   return (
-          <div class="container-fluid" id="home-content">
+    <>
+              <div class="container-fluid" id="home-content">
             <div class="container">
               <div class="home-title">
                 <span>افزودن جلسه جدید</span>
@@ -139,5 +152,37 @@ export default function Sessions() {
               </form>
             </div>
           </div>
+          <DataTable title="جلسات">
+           <table class="table">
+          <thead>
+            <tr>
+              <th>شناسه</th>
+              <th>عنوان</th>
+              <th>مدت زمان</th>
+              <th>دوره</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sessions&&sessions.map((session,index)=>(
+            <tr key={session._id}>
+              <td>{index+1}</td>
+              <td>{session.title}</td>
+              <td>{session.time}</td>
+              <td>{session.course.name}</td>
+              
+              <td>
+                <button type="button" class="btn btn-danger delete-btn" >
+                  حذف
+                </button>
+              </td>
+
+            </tr>
+            ))}
+          </tbody>
+        </table>
+          </DataTable>
+    </>
+
   )
 }
