@@ -79,6 +79,43 @@ export default function Sessions() {
         
       });
     }
+    //delete session
+    const deleteSession=(sessionId)=>{
+    const localStorageData = JSON.parse(localStorage.getItem("user"));
+
+      Swal.fire({
+        title:"آیا از حذف دوره اطمینان دارید؟",
+        showConfirmButton:true,
+        confirmButtonText:"بله",
+        showCancelButton:true,
+        cancelButtonText:"خیر"
+      }).then(result=>{
+        if(result.isConfirmed){
+          fetch(`http://localhost:3000/v1/courses/sessions/${sessionId}`,{
+            method:"DELETE",
+            headers:{
+              Authorization: `Bearer ${localStorageData}`,
+            }
+          }).then(res=>{
+            if(res.ok){
+              Swal.fire({
+                title:"تبریک!",
+                text:"این جلسه حذف شد",
+                icon:"success"
+              }).then(()=>{
+                getAllSessions();
+              })
+            }else{
+                Swal.fire({
+                title:" متاسفیم!",
+                text:"این جلسه حذف نشد",
+                icon:"success"
+              })
+            }
+          })
+        }
+      })
+    }
   return (
     <>
               <div class="container-fluid" id="home-content">
@@ -172,7 +209,7 @@ export default function Sessions() {
               <td>{session.course.name}</td>
               
               <td>
-                <button type="button" class="btn btn-danger delete-btn" >
+                <button type="button" class="btn btn-danger delete-btn" onClick={()=>deleteSession(session._id)} >
                   حذف
                 </button>
               </td>
