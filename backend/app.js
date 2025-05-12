@@ -11,6 +11,7 @@ const newslettersRoutes = require("./routes/v1/newsletter");
 const contactRoutes = require("./routes/v1/contact");
 const searchRoutes = require("./routes/v1/search");
 const notificationRoutes = require("./routes/v1/notification");
+const infosRoutes = require("./routes/v1/infos");
 const usersRoutes = require("./routes/v1/user");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -39,5 +40,6 @@ app.use("/v1/newsletters", newslettersRoutes);
 app.use("/v1/contact", contactRoutes);
 app.use("/v1/search", searchRoutes);
 app.use("/v1/notifications", notificationRoutes);
+app.use("/v1/infos", infosRoutes);
 
 module.exports = app;
