@@ -17,8 +17,8 @@ exports.getIndex = async (req, res) => {
   );
 
   res.json({
-    phone: allInfos[0],
-    email: allInfos[0],
+    phone: allInfos[0].phone,
+    email: allInfos[0].email,
     coursesCount,
     usersCount,
     totalTime,
