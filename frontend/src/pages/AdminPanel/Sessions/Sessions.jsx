@@ -9,6 +9,7 @@ export default function Sessions() {
     const [sessionCourse,setSessionCourse]=useState('-1');
     const [sessionVideo,setSessionVideo]=useState({});
     const [sessions,setSessons]=useState([]);
+    const[isSessionFree,setIsSessionFree]=useState("0")
     const [formState,onInputHandler]=useForm({
         title:{
           value: "",
@@ -38,7 +39,7 @@ export default function Sessions() {
     formData.append("title",formState.inputs.title.value);
     formData.append("time",formState.inputs.time.value);
     formData.append("video",sessionVideo);
-    formData.append("free",0)
+    formData.append("free",isSessionFree)
       if(sessionCourse!=='-1'){
               fetch(`http://localhost:3000/v1/courses/${sessionCourse}/sessions`,{
         method:"POST",
@@ -180,7 +181,38 @@ export default function Sessions() {
                     <span class="error-message text-danger"></span>
                   </div>
                 </div>
-    
+                <div class="col-6">
+              <div class="presell">
+                <label class="input-title">نوع جلسه</label>
+                <div class="radios">
+                  <div class="presell-true">
+                    <label>
+                      <span> پولی</span>
+                      <input
+                        type="radio"
+                        value="0"
+                        name="presell"
+                        checked={isSessionFree=="0"}
+                        onChange={e=>setIsSessionFree(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                  <div class="presell-false">
+                    <label>
+                      <span>غیرپولی</span>
+                      <input
+                        type="radio"
+                        value="1"
+                        name="presell"
+                        checked={isSessionFree=="1"}
+                        onChange={e=>setIsSessionFree(e.target.value)}
+
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
                 <div class="col-12">
                   <div class="bottom-form">
                     <div class="submit-btn">
