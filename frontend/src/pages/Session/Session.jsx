@@ -97,16 +97,6 @@ export default function Session() {
                       <a class="episode-content__video-link" href="#">
                         دانلود ویدئو
                       </a>
-                      <div class="episode-content__bottom">
-                        <a class="episode-content__backward" href="#">
-                          <i class="episode-content__backward-icon fa fa-arrow-right"></i>
-                          قبلی
-                        </a>
-                        <a class="episode-content__forward" href="#">
-                          بعدی
-                          <i class="episode-content__backward-icon fa fa-arrow-left"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </div>
