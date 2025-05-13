@@ -16,6 +16,7 @@ import Menus from "./pages/AdminPanel/Menus/Menus";
 import AdminCategory from "./pages/AdminPanel/Category/Category";
 import AdminContact from"./pages/AdminPanel/Contact/Contact"
 import Sessions from "./pages/AdminPanel/Sessions/Sessions";
+import Session from "./pages/Session/Session";
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -27,6 +28,8 @@ const Routes=[
     {path:'/register',element:<Register/>},
     {path:'/contact',element:<Contact/>},
     {path:'/search/:value',element:<Search/>},
+    {path:'/:courseName/:sessionId',element:<Session/>},
+
     {path:'/p-admin/*',element:<PanelAdmin/>, children:[
         {path:'users',element:<Users/>},
         {path:'courses',element:<AdminCourses/>},
