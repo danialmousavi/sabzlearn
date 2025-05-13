@@ -40,6 +40,16 @@ exports.getAllTopbarLinks = async (req, res) => {
 };
 
 exports.getAllPanelMenus = async (req, res) => {
-  const menus = await menuModel.find({}).populate('parent').lean();
-  res.json(menus)
+  const menus = await menuModel.find({}).populate("parent").lean();
+  res.json(menus);
+};
+
+exports.remove = async (req, res) => {
+  const deletedMenu = await menuModel.findOneAndRemove({
+    _id: req.params.id,
+  });
+  if (!deletedMenu) {
+    return res.status(404).json({ message: "Menu Not Found!" });
+  }
+  return res.json(deletedMenu);
 };
