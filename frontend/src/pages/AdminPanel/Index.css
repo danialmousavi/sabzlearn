@@ -748,3 +748,10 @@
     width: 100%;
     height: 200px;
   }
+  /* contact page style */
+  .contact-answerd{
+    background-color: var( --primary-color)!important;
+  }
+  .contact-not-answerd{
+    background-color: red !important;
+  }

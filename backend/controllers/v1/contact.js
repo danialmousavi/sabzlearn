@@ -4,7 +4,13 @@ var nodemailer = require("nodemailer");
 exports.create = async (req, res) => {
   const { name, email, phone, body } = req.body;
 
-  const newcontact = await contactModel.create({ name, email, phone, body });
+  const newcontact = await contactModel.create({
+    name,
+    email,
+    phone,
+    body,
+    answer: 0,
+  });
 
   return res.status(201).json(newcontact);
 };
@@ -31,6 +37,13 @@ exports.asnwer = async (req, res) => {
     text: req.body.answer,
   };
 
+  const contact = await contactModel.findOneAndUpdate(
+    { email: req.body.email },
+    {
+      answer: 1,
+    }
+  );
+
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       res.json({ message: error });
@@ -48,4 +61,4 @@ exports.remove = async (req, res) => {
     return res.status(404).json({ message: "Contact Not Found!" });
   }
   return res.json(deletedContact);
-}
+};

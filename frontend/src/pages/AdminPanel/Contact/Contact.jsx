@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import DataTable from '../../../components/AdminPanel/DataTable/DataTable'
 import Swal from 'sweetalert2';
-
 export default function Contact() {
     const [contacts,setContacts]=useState([]);
     useEffect(()=>{
@@ -46,6 +45,7 @@ export default function Contact() {
               title:"تبریک پیام شما با موفقیت ارسال شد",
               icon:"success"
             })
+            getAllContacts();
           }else{
             Swal.fire({
               title:"متاسفیم پیام شما با  ارسال نشد",
@@ -108,7 +108,9 @@ export default function Contact() {
           <tbody>
             {contacts&&contacts.map((contact,index)=>(
             <tr key={contact._id}>
-              <td>{index+1}</td>
+              <td
+              className={contact.answer===1?"contact-answerd":"contact-not-answerd"}
+              >{index+1}</td>
               <td>{contact.name}</td>
               <td>{contact.email}</td>
               <td>{contact.phone}</td>

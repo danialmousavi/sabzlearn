@@ -14,6 +14,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    answer: {
+      type: Number,
+      required: true,
+    },
     body: {
       type: String,
       required: true,
