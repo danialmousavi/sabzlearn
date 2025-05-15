@@ -14,9 +14,11 @@ export default function Sidebar() {
       showCancelButton: true,
       cancelButtonText: "خیر",
       confirmButtonText:'بله'
-    }).then(()=>{
-      authContext.logOut();
+    }).then((result)=>{
+      if(result.isConfirmed){
+       authContext.logOut();
       navigate('/');
+      }
     })
   }
   return (
@@ -74,6 +76,11 @@ export default function Sidebar() {
               <span>پیغام ها</span>
             </Link>
           </li>
+          <li>
+            <Link to="/p-admin/comments">
+              <span>کامنت ها</span>
+            </Link>
+          </li>            
           <li>
             <Link to="/p-admin/sessions">
               <span>جلسات</span>

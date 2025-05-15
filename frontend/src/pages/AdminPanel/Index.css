@@ -755,3 +755,11 @@
   .contact-not-answerd{
     background-color: red !important;
   }
+  .answerd-comment{
+    background-color: var( --primary-color)!important;
+
+  }
+  .not-answerd-comment{
+    background-color: red !important;
+    
+  }

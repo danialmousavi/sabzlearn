@@ -26,9 +26,13 @@ export default function Contact() {
         title:"پاسخ به کاربر",
         input: "text",
         inputPlaceholder: "پاسخ خود را بنویسید",
-        
+        showCancelButton:true,
+        cancelButtonText:"کنسل",
+        showConfirmButton:true,
+        confirmButtonText:"تایید"
       }).then(result=>{
-        const answerToUser={
+          if(result.isConfirmed){
+            const answerToUser={
           email:contactEmail,
           answer:result.value
         }
@@ -53,6 +57,7 @@ export default function Contact() {
             })
           }
         })
+          }
       })
     }
     //delete contact 
