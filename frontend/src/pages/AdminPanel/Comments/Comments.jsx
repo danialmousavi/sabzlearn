@@ -173,6 +173,40 @@ export default function Comments() {
                 }
             })
     }
+    //reject comment
+    const rejectComment=(commentID)=>{
+       const localStorageData=JSON.parse(localStorage.getItem("user"));
+            Swal.fire({
+              title:" رد کامنت",
+              text:"آیا اطمینان دارید؟",
+              showCancelButton:true,
+              cancelButtonText:"کنسل",
+              showConfirmButton:true,
+              confirmButtonText:"تایید"
+            }).then(result=>{
+                if(result.isConfirmed){
+              fetch(`http://localhost:3000/v1/comments/reject/${commentID}`,{
+                method:"PUT",
+                headers:{
+                  Authorization:`Bearer ${localStorageData}`
+                },
+              }).then(res=>{
+                if(res.ok){
+                  Swal.fire({
+                    title:"کامنت رد شد!",
+                    icon:"success"
+                  })
+                  getAllComments();
+                }else{
+                  Swal.fire({
+                    title:"متاسفیم کامنت رد نشد",
+                    icon:"error"
+                  })
+                }
+              })
+                }
+            })
+    }
   return (
     <>
           <DataTable title="منوها">
@@ -212,11 +246,23 @@ export default function Comments() {
                         ویرایش
                       </button>
                     </td>
+                    {comment.answer==1?(
+                      <>
+                    <td>
+                      <button type="button" class="btn btn-primary edit-btn" onClick={()=>rejectComment(comment._id)}>
+                        رد
+                      </button>
+                    </td>
+                      </>
+                    ):(
+                      <>
                     <td>
                       <button type="button" class="btn btn-primary edit-btn" onClick={()=>acceptComment(comment._id)}>
                         تایید
                       </button>
                     </td>
+                      </>
+                    )}
                     <td>
                       <button type="button" class="btn btn-danger delete-btn" onClick={()=>deleteComment(comment._id)} >
                         حذف
