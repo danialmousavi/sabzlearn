@@ -30,7 +30,7 @@ export default function CommentsTextArea({ comments, submitComment }) {
             {comments.map((comment) => (
               <>
                 {comment.answer==1&&(
-                                  <div className="comments__item" >
+                <div className="comments__item" >
                   <div className="comments__question">
                     <div className="comments__question-header">
                       <div className="comments__question-header-right">
@@ -58,7 +58,32 @@ export default function CommentsTextArea({ comments, submitComment }) {
                         {comment.body}
                       </p>
                     </div>
+                   
                   </div>
+                   {comment.answerContent&&(
+                       <div className="comments__item" >
+                    <div className="comments__question">
+                      <div className="comments__question-header">
+                        <div className="comments__question-header-right">
+                          <span className="comments__question-name comment-name">
+                            {comment.answerContent.creator.name}
+                          </span>
+                          <span className="comments__question-status comment-status">
+                            {comment.answerContent.creator.role === "ADMIN" ? "مدیر" : "کاربر"}
+                          </span>
+                          <span className="comments__question-date comment-date">
+                            {comment.answerContent.createdAt.slice(0, 10)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="comments__question-text">
+                        <p className="comments__question-paragraph comment-paragraph">
+                          {comment.answerContent.body}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                    )}
                 </div>
                 )}
               </>
