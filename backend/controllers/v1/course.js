@@ -57,7 +57,7 @@ exports.getOne = async (req, res) => {
 
   const sessions = await sessionModel.find({ course: course._id }).lean();
   const comments = await commentModel
-    .find({ course: course._id })
+    .find({ course: course._id ,answer:1})
     .populate("creator")
     .lean();
 
@@ -66,6 +66,7 @@ exports.getOne = async (req, res) => {
       course: course._id,
     })
     .count();
+
   let isUserRegisteredToThisCourse = null;
   if (req.user) {
     isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({
@@ -76,11 +77,28 @@ exports.getOne = async (req, res) => {
     isUserRegisteredToThisCourse = false;
   }
 
+  let allComments = [];
+
+  comments.forEach((comment) => {
+    let mainCommentAnswerInfo = null;
+    comments.forEach((answerComment) => {
+      if (String(comment._id) == String(answerComment.mainCommendID)) {
+        mainCommentAnswerInfo = { ...answerComment };
+      }
+    });
+    if (!comment.mainCommendID) {
+      allComments.push({
+        ...comment,
+        course: comment.course.name,
+        answerContent: mainCommentAnswerInfo,
+      });
+    }
+  });
   return res.json({
     ...course,
     courseStudentsCount,
     sessions,
-    comments,
+    comments:allComments,
     isUserRegisteredToThisCourse,
   });
 };
