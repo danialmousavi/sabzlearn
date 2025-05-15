@@ -29,7 +29,8 @@ export default function CommentsTextArea({ comments, submitComment }) {
           <>
             {comments.map((comment) => (
               <>
-                <div className="comments__item" >
+                {comment.answer==1&&(
+                                  <div className="comments__item" >
                   <div className="comments__question">
                     <div className="comments__question-header">
                       <div className="comments__question-header-right">
@@ -59,6 +60,7 @@ export default function CommentsTextArea({ comments, submitComment }) {
                     </div>
                   </div>
                 </div>
+                )}
               </>
             ))}
             <div className="comments__pagantion">

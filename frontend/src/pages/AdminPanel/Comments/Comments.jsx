@@ -11,9 +11,11 @@ export default function Comments() {
         }
         )
     }
+    //get all comments of courses
     useEffect(()=>{
         getAllComments();
     },[])
+  //delete comment  
     const deleteComment=(commentID)=>{
  const localStorageData = JSON.parse(localStorage.getItem("user"));
     Swal.fire({
@@ -109,7 +111,7 @@ export default function Comments() {
               confirmButtonText:"تایید"
             }).then(result=>{
                 if(result.isConfirmed){
-                  const answerToUser={
+              const answerToUser={
                 body:result.value
               }
               fetch(`http://localhost:3000/v1/comments/answer/${commentID}`,{
@@ -136,6 +138,41 @@ export default function Comments() {
                 }
             })
     }
+    //accept comment
+        const acceptComment=(commentID)=>{
+       const localStorageData=JSON.parse(localStorage.getItem("user"));
+            
+            Swal.fire({
+              title:"تایید به کامنت",
+              text:"آیا اطمینان دارید؟",
+              showCancelButton:true,
+              cancelButtonText:"کنسل",
+              showConfirmButton:true,
+              confirmButtonText:"تایید"
+            }).then(result=>{
+                if(result.isConfirmed){
+              fetch(`http://localhost:3000/v1/comments/accept/${commentID}`,{
+                method:"PUT",
+                headers:{
+                  Authorization:`Bearer ${localStorageData}`
+                },
+              }).then(res=>{
+                if(res.ok){
+                  Swal.fire({
+                    title:"کامنت تایید شد!",
+                    icon:"success"
+                  })
+                  getAllComments();
+                }else{
+                  Swal.fire({
+                    title:"متاسفیم کامنت تایید نشد",
+                    icon:"error"
+                  })
+                }
+              })
+                }
+            })
+    }
   return (
     <>
           <DataTable title="منوها">
@@ -148,7 +185,9 @@ export default function Comments() {
                   <th>مشاهده</th>
                   <th>پاسخ</th>
                   <th>ویرایش</th>
+                  <th>تایید</th>
                   <th>حذف</th>
+                  <th>بن</th>
                 </tr>
               </thead>
               <tbody>
@@ -171,6 +210,11 @@ export default function Comments() {
                     <td>
                       <button type="button" class="btn btn-primary edit-btn">
                         ویرایش
+                      </button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary edit-btn" onClick={()=>acceptComment(comment._id)}>
+                        تایید
                       </button>
                     </td>
                     <td>
