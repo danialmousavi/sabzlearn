@@ -79,7 +79,45 @@ export default function Offs() {
         }
       })
     }
-    
+    //delete offer
+    const deleteOff=(offID)=>{
+      const localStorageData=JSON.parse(localStorage.getItem("user"))
+      Swal.fire({
+        title:"آیا از حذف کد تخفیف اطمینان دارید؟",
+        icon:"question",
+        confirmButtonText:"بله",
+        showConfirmButton:true,
+        showCancelButton:true,
+        cancelButtonText:"خیر"
+      }).then(result=>{
+        if(result.isConfirmed){
+          fetch(`http://localhost:3000/v1/offs/${offID}`,{
+            method:"DELETE",
+            headers:{
+              Authorization:`Bearer ${localStorageData}`
+            }
+          }).then(res=>{
+            if(res.ok){
+              Swal.fire({
+                title:"کد تخفیف حذف شد",
+                icon:"success",
+                showConfirmButton:true,
+                confirmButtonText:"تایید"
+              }).then(()=>{
+                getAllOffs();
+              })
+            }else{
+               Swal.fire({
+                title:"کد تخفیف حذف نشد",
+                icon:"error",
+                showConfirmButton:true,
+                confirmButtonText:"تایید"
+              })
+            }
+          })
+        }
+      })
+    }
   return (
     <>
           <div class="container-fluid" id="home-content">
@@ -193,7 +231,7 @@ export default function Offs() {
               
               
               <td>
-                <button type="button" class="btn btn-danger delete-btn" >
+                <button type="button" class="btn btn-danger delete-btn" onClick={()=>deleteOff(off._id)} >
                   حذف
                 </button>
               </td>
