@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Input from '../../../components/Form/Input'
 import { minValidator, requierdValidator } from '../../../validators/rules'
 import { useForm } from '../../../hooks/useForm';
+import Swal from 'sweetalert2';
+import DataTable from '../../../components/AdminPanel/DataTable/DataTable';
 
 export default function Offs() {
     const [offCourse,setOffCourse]=useState('-1');
     const[courses,setCourses]=useState([]);
+    const [AllOffs,setAllOffs]=useState([]);
     const [formState,onInputHandler]=useForm({
      code: {
         value: "",
@@ -20,12 +23,25 @@ export default function Offs() {
         isValid: false,
       },
     },false)
+    const getAllOffs=()=>{
+      const localStorageData=JSON.parse(localStorage.getItem("user"));
+      fetch('http://localhost:3000/v1/offs',{
+        headers:{
+          Authorization:`Bearer ${localStorageData}`
+        }
+      }).then(res=>res.json()).then(data=>{
+        console.log(data)
+        setAllOffs(data);
+      }
+      )
+    }
     useEffect(()=>{
     fetch(`http://localhost:3000/v1/courses`)
       .then((res) => res.json())
       .then((allCourses) => {
         setCourses(allCourses)
       });
+      getAllOffs();
     },[])
     //createOff
     const createOff=(e)=>{
@@ -44,9 +60,26 @@ export default function Offs() {
           Authorization:`Bearer ${localStorageData}`
         },
         body:JSON.stringify(newOff)
-      }).then(res=>console.log(res)
-      )
+      }).then(res=>{
+        if(res.ok){
+        Swal.fire({
+          title: "عالیه!",
+          text: "کد تخفیف با موفقیت ثبت شد",
+          icon: "success",
+          confirmButtonText:"تایید"
+        }).then(()=>{
+          getAllOffs();
+        });       
+        }else{
+          Swal.fire({
+            title:"متاسفیم!",
+            text:"کد تخفیف ایجاد نشد",
+            icon:"error"
+          })
+        }
+      })
     }
+    
   return (
     <>
           <div class="container-fluid" id="home-content">
@@ -135,6 +168,41 @@ export default function Offs() {
               </form>
             </div>
           </div>
+          <DataTable title="تخفیف ها">
+           <table class="table">
+          <thead>
+            <tr>
+              <th>شناسه</th>
+              <th>کد</th>
+              <th>سازنده</th>
+              <th>درصد</th>
+              <th>حداکثر استفاده</th>
+              <th>دفعات استفاده</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody>
+            {AllOffs&&AllOffs.map((off,index)=>(
+            <tr key={off._id}>
+              <td>{index+1}</td>
+              <td>{off.code}</td>
+              <td>{off.creator}</td>
+              <td>{off.percent}</td>
+              <td>{off.max}</td>
+              <td>{off.uses}</td>
+              
+              
+              <td>
+                <button type="button" class="btn btn-danger delete-btn" >
+                  حذف
+                </button>
+              </td>
+
+            </tr>
+            ))}
+          </tbody>
+        </table>
+          </DataTable>          
     </>
   )
 }
