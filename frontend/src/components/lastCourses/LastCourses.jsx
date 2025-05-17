@@ -5,7 +5,11 @@ import CourseBox from "../CourseBox/CourseBox";
 export default function LastCourses() {
   const [courses,setCourses]=useState([]);
   useState(()=>{
-    fetch('http://localhost:3000/v1/courses').then(res=>res.json()).then(data=>setCourses(data)
+    fetch('http://localhost:3000/v1/courses').then(res=>res.json()).then(data=>{
+      setCourses(data);
+      console.log(data);
+      
+    }
     )
   },[])
   return (

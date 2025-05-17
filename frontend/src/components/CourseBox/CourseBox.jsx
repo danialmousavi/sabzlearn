@@ -25,11 +25,8 @@ export default function CourseBox(props) {
                         <a href="#" className="course-box__teacher-link">{props.creator}</a>
                       </div>
                       <div className="course-box__rating">
-                        <img src="/images/svgs/star.svg" alt="rating" className="course-box__star"/>
-                        <img src="/images/svgs/star_fill.svg" alt="rating" className="course-box__star"/>
-                        <img src="/images/svgs/star_fill.svg" alt="rating" className="course-box__star"/>
-                        <img src="/images/svgs/star_fill.svg" alt="rating" className="course-box__star"/>
-                        <img src="/images/svgs/star_fill.svg" alt="rating" className="course-box__star"/>
+                      {Array(5-props.courseAverageScore).fill(0).map((item,index)=>(<img key={index} src={`/images/svgs/star.svg`}/>))}
+                      {Array(props.courseAverageScore).fill(0).map((item,index)=>(<img key={index} src={`/images/svgs/star_fill.svg`}/>))}
                       </div>
                     </div>
 
