@@ -7,7 +7,7 @@ import "./CommentsTextArea.css";
 export default function CommentsTextArea({ comments, submitComment }) {
   const [newCommentBody, setNewCommentBody] = useState("");
   const authContext = useContext(AuthContext);
-
+  const [commentScore,setCommentScore]=useState("5")
   const onChangeHandler = (event) => {
     setNewCommentBody(event.target.value);
   };
@@ -144,12 +144,16 @@ export default function CommentsTextArea({ comments, submitComment }) {
           <div className="comments__respond">
             <div className="comments__score">
               <span className="comments__score-title">امتیاز شما</span>
-              <div className="comments__score-input">
-                <span className="comments__score-input-text">
-                  امتیاز خود را انتخاب کنید
-                </span>
-                <i className="fas fa-angle-down	 comments__input-icon"></i>
-              </div>
+                <div className="col-12 m-2">
+                  <select className="form-select form-control fs-4" onChange={(e)=>setCommentScore(e.target.value)}>
+                    <option value="5" className="form-control">عالی</option>
+                    <option value="4" className="form-control">خیلی خوب</option>
+                    <option value="3" className="form-control">خوب</option>
+                    <option value="2" className="form-control">ضعیف</option>
+                    <option value="1" className="form-control">بد</option>
+
+                  </select>
+                </div>
             </div>
             <div className="comments__respond-content">
               <div className="comments__respond-title">دیدگاه شما *</div>
@@ -164,7 +168,7 @@ export default function CommentsTextArea({ comments, submitComment }) {
             <button
               type="submit"
               className="comments__respond-btn"
-              onClick={() => submitComment(newCommentBody)}
+              onClick={() => submitComment(newCommentBody,commentScore)}
             >
               ارسال
             </button>

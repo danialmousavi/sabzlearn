@@ -43,7 +43,7 @@ export default function CourseInfo() {
     getCourseDetail();
   },[])
   
-  const submitComment = (newCommentBody) => {
+  const submitComment = (newCommentBody,commentScore) => {
       const localStorageData=JSON.parse(localStorage.getItem("user"));
       fetch("http://localhost:3000/v1/comments",{
         method:"POST",
@@ -53,7 +53,8 @@ export default function CourseInfo() {
         },
         body:JSON.stringify({
           body:newCommentBody,
-          courseShortName:courseName
+          courseShortName:courseName,
+          score:commentScore
         })
       }).then(res=>res.json()).then(data=>{
         Swal.fire({
