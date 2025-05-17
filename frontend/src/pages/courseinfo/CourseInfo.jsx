@@ -20,8 +20,8 @@ export default function CourseInfo() {
   const [isUserRegisteredToThisCourse,setIsUserRegisteredToThisCourse]=useState(false);
   const [courseStudentsCount,setCourseStudentsCount]=useState(0);
   const [comments,setComments]=useState([]);
-  useEffect(()=>{    
-    const localStorageData=JSON.parse(localStorage.getItem('user'))
+  const getCourseDetail=()=>{
+        const localStorageData=JSON.parse(localStorage.getItem('user'))
     
     fetch(`http://localhost:3000/v1/courses/${courseName}`,{
       method:"POST",
@@ -38,6 +38,9 @@ export default function CourseInfo() {
       setComments(data.comments)
     }
     )
+  }
+  useEffect(()=>{    
+    getCourseDetail();
   },[])
   
   const submitComment = (newCommentBody) => {
@@ -81,8 +84,154 @@ export default function CourseInfo() {
   //   .then((result) => {
   //     console.log(result);
   //   });
-  console.log(courseDetails);
-  
+  // registerUser
+  const registerUser=(course)=>{
+    const localStorageData=JSON.parse(localStorage.getItem("user"));
+    console.log(course);
+    if(course.price==0){
+      Swal.fire({
+        title:"آیا از ثبت نام در دوره اطمینان دارید؟",
+        icon:"question",
+        showConfirmButton:true,
+        confirmButtonText:"بله",
+        showCancelButton:true,
+        cancelButtonText:"خیر"
+      }).then(result=>{
+        if(result.isConfirmed){
+          fetch(`http://localhost:3000/v1/courses/${course._id}/register`,{
+            method:"POST",
+            headers:{
+              Authorization:`Bearer ${localStorageData}`,
+              "Content-Type":"application/json",
+            },
+            body:JSON.stringify({price:course.price})
+
+          }).then(res=>{
+            console.log(res);
+            if(res.ok){
+              Swal.fire({
+                title:"شمابا موفقیت در دوره ثبت نام کردین",
+                icon:"success",
+                confirmButtonText:"تایید"
+              }).then(()=>{
+                getCourseDetail();
+              })
+            }else{
+               Swal.fire({
+                title:"متاسفانه شما در دوره ثبت نام نکردین",
+                icon:"error",
+                confirmButtonText:"تایید"
+              })
+            }
+          })
+        }
+      })
+    }else{
+      Swal.fire({
+        title:"آیا از ثبت نام در دوره اطمینان دارید؟",
+        icon:"question",
+        showConfirmButton:true,
+        confirmButtonText:"بله",
+        showCancelButton:true,
+        cancelButtonText:"خیر"
+      }).then(result=>{
+        if(result.isConfirmed){
+          Swal.fire({
+            title:"اگر کد تخفیف دارید آن را وارد کنید",
+            icon:"info",
+            input:"text",
+            inputPlaceholder:"کد تخفیف",
+            showConfirmButton:true,
+            confirmButtonText:"اعمال کد تخفیف",
+            showCancelButton:true,
+            cancelButtonText:"ثبت نام بدون کد تخفیف"
+          }).then(code=>{
+            if(code.isDismissed){
+              fetch(`http://localhost:3000/v1/courses/${course._id}/register`,{
+            method:"POST",
+            headers:{
+              Authorization:`Bearer ${localStorageData}`,
+               "Content-Type":"application/json",
+              
+            },
+            body:JSON.stringify({price:course.price})
+          }).then(res=>{
+            console.log(res);
+            if(res.ok){
+              Swal.fire({
+                title:"شمابا موفقیت در دوره ثبت نام کردین",
+                icon:"success",
+                confirmButtonText:"تایید"
+              }).then(()=>{
+                getCourseDetail();
+              })
+            }else{
+               Swal.fire({
+                title:"متاسفانه شما در دوره ثبت نام نکردین",
+                icon:"error",
+                confirmButtonText:"تایید"
+              })
+            }
+          })
+              
+            }else{
+              fetch(`http://localhost:3000/v1/offs/${code.value}`,{
+                method:"POST",
+                headers:{
+                Authorization:`Bearer ${localStorageData}`,
+                "Content-Type":"application/json",
+                },
+                body:JSON.stringify({course:course._id})
+              }).then(res=>{
+                console.log(res);
+                if(res.status===404){
+                  Swal.fire({
+                    title:"کد تخفیف معتبر نیست",
+                    icon:"error"
+                  })
+                }else if(res.status===409){
+                  Swal.fire({
+                    title:"انقضای کد تخفیف تمام شده است",
+                    icon:"error"
+                  })
+                }else{
+                  res.json();
+                }
+              }).then(code=>{
+                console.log(code);
+                
+                fetch(
+                    `http://localhost:3000/v1/courses/${course._id}/register`,
+                    {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${localStorageData}`,
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({price:course.price - (course.price * code) / 100,}),
+                    }).then(res=>{
+                      if(res.ok){
+                        Swal.fire({
+                          title:"شما در دوره با موفقیت ثبت نام شدید",
+                          icon:"success"
+                        }).then(()=>{
+                          getCourseDetail();
+                        })
+                      }else{
+                            Swal.fire({
+                          title:"متاسفیم شما ثبت نام نشدید",
+                          icon:"error"
+                        })
+                      }
+                    })
+              })
+              
+            }
+          })
+        }
+      })
+    }
+  }
   return (
     <>
       <Topbar />
@@ -374,7 +523,15 @@ export default function CourseInfo() {
                   <div className="course-info__register">
                     <span className="course-info__register-title">
                       <i className="fas fa-graduation-cap course-info__register-icon"></i>
-                      {isUserRegisteredToThisCourse===false?"ثبت نام در دوره":"دانشجوی دوره هستید"}
+                      {isUserRegisteredToThisCourse===false?(
+                    <span className="course-info__register-title" style={{cursor:"pointer"}} onClick={()=>registerUser(courseDetails)}>
+                        ثبت نام در دوره
+                    </span>
+                      ):(
+                    <span className="course-info__register-title">
+                        دانشجوی دوره هستید
+                    </span>
+                      )}
                     </span>
                   </div>
                 </div>

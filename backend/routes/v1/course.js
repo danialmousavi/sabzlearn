@@ -45,6 +45,8 @@ router
     courseController.removeSession
   );
 
+router.route("/related/:shortName").get(courseController.getRelated);
+
 router
   .route("/:shortName/:sessionID")
   .get(
@@ -58,7 +60,9 @@ router.route("/popular").get(courseController.getAll);
 
 router.route("/:shortName").post(loginUser, courseController.getOne);
 
-router.route("/:id/register").post(courseController.register);
+router
+  .route("/:id/register")
+  .post(authenticatedMiddleware, courseController.register);
 
 router
   .route("/category/:categoryName")
