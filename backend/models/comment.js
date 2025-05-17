@@ -18,10 +18,10 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    // score: {
-    //   type: Number,
-    //   required: true,
-    // },
+    score: {
+      type: Number,
+      required: true,
+    },
     isAnswer: {
       type: Number,
       required: true,

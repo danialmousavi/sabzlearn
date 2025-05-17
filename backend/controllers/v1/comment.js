@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
     creator: req.user._id,
     answer: 0,
     isAnswer: 0,
-    // score
+    score
   });
 
   return res.status(201).json(comment);
