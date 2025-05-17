@@ -19,6 +19,7 @@ import Sessions from "./pages/AdminPanel/Sessions/Sessions";
 import Session from "./pages/Session/Session";
 import Comments from "./pages/AdminPanel/Comments/Comments";
 import Offs from "./pages/AdminPanel/Offs/Offs";
+import PAdminIndex from "./pages/AdminPanel/Index/Index"
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -33,6 +34,7 @@ const Routes=[
     {path:'/:courseName/:sessionId',element:<Session/>},
 
     {path:'/p-admin/*',element:<PanelAdmin/>, children:[
+        {path:'',element:<PAdminIndex/>},
         {path:'users',element:<Users/>},
         {path:'courses',element:<AdminCourses/>},
         {path:'articles',element:<AdminArticles/>},

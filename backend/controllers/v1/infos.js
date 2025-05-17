@@ -28,8 +28,29 @@ exports.getIndex = async (req, res) => {
 exports.getPAdmin = async (req, res) => {
   const coursesRegistersCount = await courseUserModel.find().lean().count();
   const coursesCount = await courseModel.find().lean().count();
+  const sessionsCount = await sessionModel.find().lean().count();
+  let users = await userModel.find().sort({ _id: -1 }).lean()
+
 
   const admin = await userModel.findOne({ _id: req.user._id });
-  console.log(admin);
-  res.json({ coursesRegistersCount, coursesCount, adminName: admin.name });
+  users = users.slice(0, 5)
+
+  res.json({
+    infos: [
+      {
+        count: coursesRegistersCount,
+        title: "ثبت نامی‌ها",
+      },
+      {
+        count: coursesCount,
+        title: "دوره‌ها",
+      },
+      {
+        count: sessionsCount,
+        title: "جلسات",
+      },
+    ],
+    lastUsers: users,
+    adminName: admin.name,
+  });
 };
