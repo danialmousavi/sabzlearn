@@ -10,63 +10,74 @@ import Accordion from "react-bootstrap/Accordion";
 import { Link, useParams } from "react-router";
 import { FaLock } from "react-icons/fa6";
 
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 export default function CourseInfo() {
-  const {courseName}=useParams();
-  const [courseDetails,setCourseDetails]=useState([]);
-  const [courseCategory,setCourseCategory]=useState([]);
-  const [updatedAt,setPpdatedAt]=useState('')
-  const [sessions,setSessions]=useState([]);
-  const [isUserRegisteredToThisCourse,setIsUserRegisteredToThisCourse]=useState(false);
-  const [courseStudentsCount,setCourseStudentsCount]=useState(0);
-  const [comments,setComments]=useState([]);
-  const getCourseDetail=()=>{
-        const localStorageData=JSON.parse(localStorage.getItem('user'))
-    
-    fetch(`http://localhost:3000/v1/courses/${courseName}`,{
-      method:"POST",
-      headers:{
-        "Authorization":`Bearer ${localStorageData==null?null:localStorageData}`
-      }
-    }).then(res=>res.json()).then(data=>{
-      setCourseDetails(data);
-      setCourseCategory(data.categoryID);
-      setPpdatedAt(data.updatedAt);
-      setSessions(data.sessions)
-      setIsUserRegisteredToThisCourse(data.isUserRegisteredToThisCourse)
-      setCourseStudentsCount(data.courseStudentsCount);
-      setComments(data.comments)
-    }
-    )
-  }
-  useEffect(()=>{    
+  const { courseName } = useParams();
+  const [courseDetails, setCourseDetails] = useState([]);
+  const [courseCategory, setCourseCategory] = useState([]);
+  const [updatedAt, setPpdatedAt] = useState("");
+  const [sessions, setSessions] = useState([]);
+  const [isUserRegisteredToThisCourse, setIsUserRegisteredToThisCourse] =
+    useState(false);
+  const [courseStudentsCount, setCourseStudentsCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [relatedCourses, setRelatedCourses] = useState([]);
+  const getCourseDetail = () => {
+    const localStorageData = JSON.parse(localStorage.getItem("user"));
+
+    fetch(`http://localhost:3000/v1/courses/${courseName}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${
+          localStorageData == null ? null : localStorageData
+        }`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCourseDetails(data);
+        setCourseCategory(data.categoryID);
+        setPpdatedAt(data.updatedAt);
+        setSessions(data.sessions);
+        setIsUserRegisteredToThisCourse(data.isUserRegisteredToThisCourse);
+        setCourseStudentsCount(data.courseStudentsCount);
+        setComments(data.comments);
+      });
+  };
+  useEffect(() => {
     getCourseDetail();
-  },[])
-  
-  const submitComment = (newCommentBody,commentScore) => {
-      const localStorageData=JSON.parse(localStorage.getItem("user"));
-      fetch("http://localhost:3000/v1/comments",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          Authorization:`Bearer ${localStorageData}`
-        },
-        body:JSON.stringify({
-          body:newCommentBody,
-          courseShortName:courseName,
-          score:commentScore
-        })
-      }).then(res=>res.json()).then(data=>{
+    fetch(`http://localhost:3000/v1/courses/related/${courseName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRelatedCourses(data);
+        console.log(data);
+      });
+  }, [courseName]);
+
+  const submitComment = (newCommentBody, commentScore) => {
+    const localStorageData = JSON.parse(localStorage.getItem("user"));
+    fetch("http://localhost:3000/v1/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorageData}`,
+      },
+      body: JSON.stringify({
+        body: newCommentBody,
+        courseShortName: courseName,
+        score: commentScore,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
         Swal.fire({
           title: "عالیه!",
           text: "کامنت با موفقیت ثبت شد",
           icon: "success",
-          timer:3000,
-          confirmButtonText:"تایید"
+          timer: 3000,
+          confirmButtonText: "تایید",
         });
-      }
-      )
-    
+      });
   };
   // const localStorageData = JSON.parse(localStorage.getItem("user"));
 
@@ -86,122 +97,121 @@ export default function CourseInfo() {
   //     console.log(result);
   //   });
   // registerUser
-  const registerUser=(course)=>{
-    const localStorageData=JSON.parse(localStorage.getItem("user"));
+  const registerUser = (course) => {
+    const localStorageData = JSON.parse(localStorage.getItem("user"));
     console.log(course);
-    if(course.price==0){
+    if (course.price == 0) {
       Swal.fire({
-        title:"آیا از ثبت نام در دوره اطمینان دارید؟",
-        icon:"question",
-        showConfirmButton:true,
-        confirmButtonText:"بله",
-        showCancelButton:true,
-        cancelButtonText:"خیر"
-      }).then(result=>{
-        if(result.isConfirmed){
-          fetch(`http://localhost:3000/v1/courses/${course._id}/register`,{
-            method:"POST",
-            headers:{
-              Authorization:`Bearer ${localStorageData}`,
-              "Content-Type":"application/json",
+        title: "آیا از ثبت نام در دوره اطمینان دارید؟",
+        icon: "question",
+        showConfirmButton: true,
+        confirmButtonText: "بله",
+        showCancelButton: true,
+        cancelButtonText: "خیر",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch(`http://localhost:3000/v1/courses/${course._id}/register`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorageData}`,
+              "Content-Type": "application/json",
             },
-            body:JSON.stringify({price:course.price})
-
-          }).then(res=>{
+            body: JSON.stringify({ price: course.price }),
+          }).then((res) => {
             console.log(res);
-            if(res.ok){
+            if (res.ok) {
               Swal.fire({
-                title:"شمابا موفقیت در دوره ثبت نام کردین",
-                icon:"success",
-                confirmButtonText:"تایید"
-              }).then(()=>{
+                title: "شمابا موفقیت در دوره ثبت نام کردین",
+                icon: "success",
+                confirmButtonText: "تایید",
+              }).then(() => {
                 getCourseDetail();
-              })
-            }else{
-               Swal.fire({
-                title:"متاسفانه شما در دوره ثبت نام نکردین",
-                icon:"error",
-                confirmButtonText:"تایید"
-              })
+              });
+            } else {
+              Swal.fire({
+                title: "متاسفانه شما در دوره ثبت نام نکردین",
+                icon: "error",
+                confirmButtonText: "تایید",
+              });
             }
-          })
+          });
         }
-      })
-    }else{
+      });
+    } else {
       Swal.fire({
-        title:"آیا از ثبت نام در دوره اطمینان دارید؟",
-        icon:"question",
-        showConfirmButton:true,
-        confirmButtonText:"بله",
-        showCancelButton:true,
-        cancelButtonText:"خیر"
-      }).then(result=>{
-        if(result.isConfirmed){
+        title: "آیا از ثبت نام در دوره اطمینان دارید؟",
+        icon: "question",
+        showConfirmButton: true,
+        confirmButtonText: "بله",
+        showCancelButton: true,
+        cancelButtonText: "خیر",
+      }).then((result) => {
+        if (result.isConfirmed) {
           Swal.fire({
-            title:"اگر کد تخفیف دارید آن را وارد کنید",
-            icon:"info",
-            input:"text",
-            inputPlaceholder:"کد تخفیف",
-            showConfirmButton:true,
-            confirmButtonText:"اعمال کد تخفیف",
-            showCancelButton:true,
-            cancelButtonText:"ثبت نام بدون کد تخفیف"
-          }).then(code=>{
-            if(code.isDismissed){
-              fetch(`http://localhost:3000/v1/courses/${course._id}/register`,{
-            method:"POST",
-            headers:{
-              Authorization:`Bearer ${localStorageData}`,
-               "Content-Type":"application/json",
-              
-            },
-            body:JSON.stringify({price:course.price})
-          }).then(res=>{
-            console.log(res);
-            if(res.ok){
-              Swal.fire({
-                title:"شمابا موفقیت در دوره ثبت نام کردین",
-                icon:"success",
-                confirmButtonText:"تایید"
-              }).then(()=>{
-                getCourseDetail();
-              })
-            }else{
-               Swal.fire({
-                title:"متاسفانه شما در دوره ثبت نام نکردین",
-                icon:"error",
-                confirmButtonText:"تایید"
-              })
-            }
-          })
-              
-            }else{
-              fetch(`http://localhost:3000/v1/offs/${code.value}`,{
-                method:"POST",
-                headers:{
-                Authorization:`Bearer ${localStorageData}`,
-                "Content-Type":"application/json",
+            title: "اگر کد تخفیف دارید آن را وارد کنید",
+            icon: "info",
+            input: "text",
+            inputPlaceholder: "کد تخفیف",
+            showConfirmButton: true,
+            confirmButtonText: "اعمال کد تخفیف",
+            showCancelButton: true,
+            cancelButtonText: "ثبت نام بدون کد تخفیف",
+          }).then((code) => {
+            if (code.isDismissed) {
+              fetch(`http://localhost:3000/v1/courses/${course._id}/register`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${localStorageData}`,
+                  "Content-Type": "application/json",
                 },
-                body:JSON.stringify({course:course._id})
-              }).then(res=>{
+                body: JSON.stringify({ price: course.price }),
+              }).then((res) => {
                 console.log(res);
-                if(res.status===404){
+                if (res.ok) {
                   Swal.fire({
-                    title:"کد تخفیف معتبر نیست",
-                    icon:"error"
-                  })
-                }else if(res.status===409){
+                    title: "شمابا موفقیت در دوره ثبت نام کردین",
+                    icon: "success",
+                    confirmButtonText: "تایید",
+                  }).then(() => {
+                    getCourseDetail();
+                  });
+                } else {
                   Swal.fire({
-                    title:"انقضای کد تخفیف تمام شده است",
-                    icon:"error"
-                  })
-                }else{
-                  res.json();
+                    title: "متاسفانه شما در دوره ثبت نام نکردین",
+                    icon: "error",
+                    confirmButtonText: "تایید",
+                  });
                 }
-              }).then(code=>{
-                console.log(code);
-                
-                fetch(
+              });
+            } else {
+              fetch(`http://localhost:3000/v1/offs/${code.value}`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${localStorageData}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ course: course._id }),
+              })
+                .then((res) => {
+                  console.log(res);
+                  if (res.status === 404) {
+                    Swal.fire({
+                      title: "کد تخفیف معتبر نیست",
+                      icon: "error",
+                    });
+                  } else if (res.status === 409) {
+                    Swal.fire({
+                      title: "انقضای کد تخفیف تمام شده است",
+                      icon: "error",
+                    });
+                  } else {
+                    res.json();
+                  }
+                })
+                .then((code) => {
+                  console.log(code);
+
+                  fetch(
                     `http://localhost:3000/v1/courses/${course._id}/register`,
                     {
                       method: "POST",
@@ -209,30 +219,32 @@ export default function CourseInfo() {
                         Authorization: `Bearer ${localStorageData}`,
                         "Content-Type": "application/json",
                       },
-                      body: JSON.stringify({price:course.price - (course.price * code) / 100,}),
-                    }).then(res=>{
-                      if(res.ok){
-                        Swal.fire({
-                          title:"شما در دوره با موفقیت ثبت نام شدید",
-                          icon:"success"
-                        }).then(()=>{
-                          getCourseDetail();
-                        })
-                      }else{
-                            Swal.fire({
-                          title:"متاسفیم شما ثبت نام نشدید",
-                          icon:"error"
-                        })
-                      }
-                    })
-              })
-              
+                      body: JSON.stringify({
+                        price: course.price - (course.price * code) / 100,
+                      }),
+                    }
+                  ).then((res) => {
+                    if (res.ok) {
+                      Swal.fire({
+                        title: "شما در دوره با موفقیت ثبت نام شدید",
+                        icon: "success",
+                      }).then(() => {
+                        getCourseDetail();
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "متاسفیم شما ثبت نام نشدید",
+                        icon: "error",
+                      });
+                    }
+                  });
+                });
             }
-          })
+          });
         }
-      })
+      });
     }
-  }
+  };
   return (
     <>
       <Topbar />
@@ -257,12 +269,8 @@ export default function CourseInfo() {
               <a href="#" className="course-info__link">
                 {courseCategory.title}
               </a>
-              <h1 className="course-info__title">
-                {courseDetails.name}
-              </h1>
-              <p className="course-info__text">
-                {courseDetails.description}
-              </p>
+              <h1 className="course-info__title">{courseDetails.name}</h1>
+              <p className="course-info__text">{courseDetails.description}</p>
               <div className="course-info__social-media">
                 <a href="#" className="course-info__social-media-item">
                   <i className="fab fa-telegram-plane course-info__icon"></i>
@@ -298,7 +306,11 @@ export default function CourseInfo() {
                   <div className="row">
                     <CourseDetailBox
                       title="وضعیت دوره:"
-                      text={courseDetails.isCompeleted?"به اتمام رسیده":"در حال برگزاری"}
+                      text={
+                        courseDetails.isCompeleted
+                          ? "به اتمام رسیده"
+                          : "در حال برگزاری"
+                      }
                       icon="graduation-cap"
                     />
                     <CourseDetailBox
@@ -308,7 +320,7 @@ export default function CourseInfo() {
                     />
                     <CourseDetailBox
                       title="آخرین بروزرسانی:"
-                      text={updatedAt.length&&updatedAt.slice(0,10)}
+                      text={updatedAt.length && updatedAt.slice(0, 10)}
                       icon="calendar-alt"
                     />
                     <CourseDetailBox
@@ -318,7 +330,11 @@ export default function CourseInfo() {
                     />
                     <CourseDetailBox
                       title="قیمت"
-                      text={courseDetails.price===0?"رایگان":courseDetails.price}
+                      text={
+                        courseDetails.price === 0
+                          ? "رایگان"
+                          : courseDetails.price
+                      }
                       icon="info-circle"
                     />
                     <CourseDetailBox
@@ -430,53 +446,67 @@ export default function CourseInfo() {
 
                   <div className="introduction__topic">
                     <Accordion defaultActiveKey="0">
-                      {sessions.length?(
-                        
-                      <Accordion.Item eventKey="1">
-                      <Accordion.Header>معرفی دوره</Accordion.Header>
-                        {sessions.map((session,index)=>(
-                          <>
-                            {session.free==0?(
-                      <Accordion.Body className=" introduction__accordion-body" key={index}>
-                        <div className="introduction__accordion-right" >
-                          <span className="introduction__accordion-count">{index+1}</span>
-                          <i className="fab fa-youtube introduction__accordion-icon"></i>
-                          <span href="#" className="introduction__accordion-link">
-                           {session.title}
-                          </span>
+                      {sessions.length ? (
+                        <Accordion.Item eventKey="1">
+                          <Accordion.Header>معرفی دوره</Accordion.Header>
+                          {sessions.map((session, index) => (
+                            <>
+                              {session.free == 0 ? (
+                                <Accordion.Body
+                                  className=" introduction__accordion-body"
+                                  key={index}
+                                >
+                                  <div className="introduction__accordion-right">
+                                    <span className="introduction__accordion-count">
+                                      {index + 1}
+                                    </span>
+                                    <i className="fab fa-youtube introduction__accordion-icon"></i>
+                                    <span
+                                      href="#"
+                                      className="introduction__accordion-link"
+                                    >
+                                      {session.title}
+                                    </span>
+                                  </div>
+                                  <div className="introduction__accordion-left">
+                                    <span className="introduction__accordion-time">
+                                      {session.time}
+                                      <FaLock />
+                                    </span>
+                                  </div>
+                                </Accordion.Body>
+                              ) : (
+                                <Accordion.Body
+                                  className=" introduction__accordion-body"
+                                  key={index}
+                                >
+                                  <div className="introduction__accordion-right">
+                                    <span className="introduction__accordion-count">
+                                      {index + 1}
+                                    </span>
+                                    <i className="fab fa-youtube introduction__accordion-icon"></i>
+                                    <Link
+                                      to={`/${courseName}/${session._id}`}
+                                      className="introduction__accordion-link"
+                                    >
+                                      {session.title}
+                                    </Link>
+                                  </div>
+                                  <div className="introduction__accordion-left">
+                                    <span className="introduction__accordion-time">
+                                      {session.time}
+                                    </span>
+                                  </div>
+                                </Accordion.Body>
+                              )}
+                            </>
+                          ))}
+                        </Accordion.Item>
+                      ) : (
+                        <div className="alert alert-warning">
+                          این دوره هنوز ویدیویی ندارد!
                         </div>
-                        <div className="introduction__accordion-left">
-                          <span className="introduction__accordion-time">
-                            {session.time}
-                            <FaLock/>
-                          </span>
-                        </div>
-                      </Accordion.Body>                              
-                            ):(
-                      <Accordion.Body className=" introduction__accordion-body" key={index}>
-                        <div className="introduction__accordion-right" >
-                          <span className="introduction__accordion-count">{index+1}</span>
-                          <i className="fab fa-youtube introduction__accordion-icon"></i>
-                          <Link to={`/${courseName}/${session._id}`} className="introduction__accordion-link">
-                           {session.title}
-                          </Link>
-                        </div>
-                        <div className="introduction__accordion-left">
-                          <span className="introduction__accordion-time">
-                            {session.time}
-                          </span>
-                        </div>
-                      </Accordion.Body>                              
-                            )}
-                          </>
-                        ))}
-                      
-                    </Accordion.Item>
-                      ):(
-                        <div className="alert alert-warning">این دوره هنوز ویدیویی ندارد!</div>
                       )}
-
-
                     </Accordion>
                   </div>
                 </div>
@@ -513,8 +543,10 @@ export default function CourseInfo() {
                 </div>
 
                 {/* Finish Teacher Details  */}
-                <CommentsTextArea comments={comments}
-                  submitComment={submitComment}/>
+                <CommentsTextArea
+                  comments={comments}
+                  submitComment={submitComment}
+                />
               </div>
             </div>
 
@@ -524,14 +556,18 @@ export default function CourseInfo() {
                   <div className="course-info__register">
                     <span className="course-info__register-title">
                       <i className="fas fa-graduation-cap course-info__register-icon"></i>
-                      {isUserRegisteredToThisCourse===false?(
-                    <span className="course-info__register-title" style={{cursor:"pointer"}} onClick={()=>registerUser(courseDetails)}>
-                        ثبت نام در دوره
-                    </span>
-                      ):(
-                    <span className="course-info__register-title">
-                        دانشجوی دوره هستید
-                    </span>
+                      {isUserRegisteredToThisCourse === false ? (
+                        <span
+                          className="course-info__register-title"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => registerUser(courseDetails)}
+                        >
+                          ثبت نام در دوره
+                        </span>
+                      ) : (
+                        <span className="course-info__register-title">
+                          دانشجوی دوره هستید
+                        </span>
                       )}
                     </span>
                   </div>
@@ -544,7 +580,9 @@ export default function CourseInfo() {
                         <span className="course-info__total-sale-text">
                           تعداد دانشجو :
                         </span>
-                        <span className="course-info__total-sale-number">{courseStudentsCount}</span>
+                        <span className="course-info__total-sale-number">
+                          {courseStudentsCount}
+                        </span>
                       </div>
                     </div>
                     <div className="course-info__bottom">
@@ -566,14 +604,18 @@ export default function CourseInfo() {
                 <div className="course-info">
                   <div className="course-info__header-short-url">
                     <i className="fas fa-link course-info__short-url-icon"></i>
-                    <span className="course-info__short-url-text">لینک کوتاه</span>
+                    <span className="course-info__short-url-text">
+                      لینک کوتاه
+                    </span>
                   </div>
                   <span className="course-info__short-url">
                     https://sabzlearn.ir/?p=117472
                   </span>
                 </div>
                 <div className="course-info">
-                  <span className="course-info__topic-title">سرفصل های دوره</span>
+                  <span className="course-info__topic-title">
+                    سرفصل های دوره
+                  </span>
                   <span className="course-info__topic-text">
                     برای مشاهده و یا دانلود دوره روی کلمه
                     <a href="#" style={{ color: "blue", fontWeight: "bold" }}>
@@ -582,59 +624,32 @@ export default function CourseInfo() {
                     کلیک کنید
                   </span>
                 </div>
-                <div className="course-info">
-                  <span className="course-info__courses-title">دوره های مرتبط</span>
-                  <ul className="course-info__courses-list">
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/js_project.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          پروژه های تخصصی با جاوا اسکریپت
-                        </span>
-                      </a>
-                    </li>
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/fareelancer.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          تعیین قیمت پروژه های فریلنسری
-                        </span>
-                      </a>
-                    </li>
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/nodejs.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          دوره Api نویسی
-                        </span>
-                      </a>
-                    </li>
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/jango.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          متخصص جنگو
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                {relatedCourses.length !== 0 && (
+                  <div className="course-info">
+                    <span className="course-info__courses-title">
+                      دوره های مرتبط
+                    </span>
+                    <ul className="course-info__courses-list">
+                      {relatedCourses.map((course) => (
+                        <li
+                          className="course-info__courses-list-item"
+                          key={course._id}
+                        >
+                          <Link to={`/course-info/${course.shortName}`} className="course-info__courses-link">
+                            <img
+                              src={`http://localhost:3000/courses/covers/${course.cover}`}
+                              alt="Course Cover"
+                              className="course-info__courses-img"
+                            />
+                            <span className="course-info__courses-text">
+                              {course.name}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>
