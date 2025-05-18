@@ -20,7 +20,7 @@ const schema = new mongoose.Schema(
     },
     score: {
       type: Number,
-      required: true,
+      required: false,
     },
     isAnswer: {
       type: Number,
