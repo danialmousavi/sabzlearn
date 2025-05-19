@@ -19,6 +19,8 @@ export default function Search() {
         }
       })
       .then((data) => {
+        console.log(data);
+        
         setCourses(data.allResultCourses);
         setArticles(data.allResultArticles);
       })

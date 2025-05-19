@@ -58,9 +58,9 @@ export default function Navbar() {
               <i className="fas fa-shopping-cart main-header__cart-icon"></i>
             </a>
             {authContext.isLoggedIn ? (
-              <a href="#" className="main-header__profile">
+              <Link to="/my-acount" className="main-header__profile">
                 <span className="main-header__profile-text">{authContext.userInfo.name}</span>
-              </a>
+              </Link>
             ) : (
               <Link to='/login' className="main-header__profile">
                 <span className="main-header__profile-text">ورود / ثبت‌ نام</span>
