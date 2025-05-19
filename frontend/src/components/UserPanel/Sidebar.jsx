@@ -1,7 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2';
+import AuthContext from '../../context/authContext';
 
 export default function Sidebar() {
+    const authContext=useContext(AuthContext);
+    const navigate=useNavigate();
+    const logOut=(e)=>{
+        e.preventDefault();
+        Swal.fire({
+            title:"آیا میخواهید از حساب کاربری خود خارج شوید؟",
+            icon:"question",
+            showConfirmButton:true,
+            confirmButtonText:"بله",
+            showCancelButton:true,
+            cancelButtonText:"خیر"
+        }).then(result=>{
+            if(result.isConfirmed){
+                authContext.logOut();
+                Swal.fire({
+                    title:"با موفقیت خارج شدید",
+                    icon:"success"
+                }).then(()=>{
+                    navigate("/");
+                })
+            }
+        })
+    }
   return (
     <div class="col-3">
       <div class="sidebar">
@@ -37,7 +62,7 @@ export default function Sidebar() {
               تیکت های پشتیبانی
             </Link>
           </li>
-          <li class="sidebar__item">
+          <li class="sidebar__item" onClick={logOut}>
             <a class="sidebar__link" href="#">
               خروج از سیستم
             </a>
