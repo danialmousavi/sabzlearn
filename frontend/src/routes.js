@@ -21,6 +21,7 @@ import Comments from "./pages/AdminPanel/Comments/Comments";
 import Offs from "./pages/AdminPanel/Offs/Offs";
 import PAdminIndex from "./pages/AdminPanel/Index/Index"
 import UserPanel from"./pages/UserPanel/Index"
+import UserPanelIndex from './pages/UserPanel/Index/Index'
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -49,7 +50,7 @@ const Routes=[
 
     ]},
     {path:'/my-account/*',element:<UserPanel/>, children:[
-
+        {path:'',element:<UserPanelIndex/>}
     ]},
 ]
 export default Routes
