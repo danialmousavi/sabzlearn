@@ -22,6 +22,8 @@ import Offs from "./pages/AdminPanel/Offs/Offs";
 import PAdminIndex from "./pages/AdminPanel/Index/Index"
 import UserPanel from"./pages/UserPanel/Index"
 import UserPanelIndex from './pages/UserPanel/Index/Index'
+import Orders from "./pages/UserPanel/Orders/Orders";
+import OrdersDetail from "./pages/UserPanel/Orders/OrdersDetail";
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -50,7 +52,10 @@ const Routes=[
 
     ]},
     {path:'/my-account/*',element:<UserPanel/>, children:[
-        {path:'',element:<UserPanelIndex/>}
+        {path:'',element:<UserPanelIndex/>},
+        {path:'orders',element:<Orders/>},
+        {path:'orders/:detail',element:<OrdersDetail/>},
+
     ]},
 ]
 export default Routes
