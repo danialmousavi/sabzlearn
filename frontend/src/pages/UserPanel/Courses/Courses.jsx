@@ -80,7 +80,8 @@ export default function Courses() {
         <div className="main">
           <div className="row">
             <div className="col-12">
-                {shownCourses.map(course=>(
+                {shownCourses.length!==0?(<>
+                                {shownCourses.map(course=>(
             <div className="main__box">
                 <div className="main__box-right">
                   <a className="main__box-img-link" href="#">
@@ -108,6 +109,9 @@ export default function Courses() {
                 </div>
               </div>
                 ))}
+                </>):(<>
+                    <div className='alert alert-danger'>دوره ای جهت نمایش در این فیلتر وجود ندارد</div>
+                </>)}
 
             </div>
           </div>
