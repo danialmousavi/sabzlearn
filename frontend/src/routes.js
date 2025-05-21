@@ -25,6 +25,7 @@ import UserPanelIndex from './pages/UserPanel/Index/Index'
 import Orders from "./pages/UserPanel/Orders/Orders";
 import OrdersDetail from "./pages/UserPanel/Orders/OrdersDetail";
 import UserPanelCourses from"./pages/UserPanel/Courses/Courses"
+import EditUserAccount from "./pages/UserPanel/EditAccount/EditAccount";
 const Routes=[
     {path:'/',element:<Index/>},
     {path:'/category-info/:categoryName/:page',element:<CategoryInfo/>},
@@ -57,6 +58,7 @@ const Routes=[
         {path:'orders',element:<Orders/>},
         {path:'orders/:detail',element:<OrdersDetail/>},
         {path:'buyed',element:<UserPanelCourses/>},
+        {path:'edit-account',element:<EditUserAccount/>},
 
     ]},
 ]
