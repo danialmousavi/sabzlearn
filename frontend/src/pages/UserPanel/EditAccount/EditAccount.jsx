@@ -4,18 +4,58 @@ import { useEffect } from 'react';
 import { useState } from 'react'
 import AuthContext from '../../../context/authContext';
 import'./EditAccount.css'
+import Swal from 'sweetalert2';
 export default function EditAccount() {
     const authContext=useContext(AuthContext);
     const [name,setName]=useState('');
     const [email,setEmail]=useState('');
     const[username,setUsername]=useState('');
     const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
     useEffect(()=>{
         setName(authContext.userInfo&&authContext.userInfo.name);
         setEmail(authContext.userInfo&&authContext.userInfo.email);
         setUsername(authContext.userInfo&&authContext.userInfo.username);
         setPhone(authContext.userInfo&&authContext.userInfo.phone);
     },[])
+    //update User Info
+    const updateUserInfo=(e)=>{
+        e.preventDefault();
+        const localStorageData=JSON.parse(localStorage.getItem('user'));
+        const newUserInfo={
+            name,
+            username,
+            email,
+            password,
+            phone
+        }
+        if(password!==''){
+                    fetch('http://localhost:3000/v1/users',{
+            method:"PUT",
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorageData}`,
+            },
+            body:JSON.stringify(newUserInfo)
+        }).then(res=>{
+            if(res.ok){
+                Swal.fire({
+                    title:"اطلاعات شما با موفقیت آپدیت شد",
+                    icon:"success",
+                })
+                return res.json();
+            }
+            
+        }
+        ).then(data=>console.log(data)
+        )
+        }else{
+                Swal.fire({
+                    title:"رمز عبور اجباری است",
+                    icon:"warning",
+                })
+        }
+    }
   return (
     <div class="col-9">
       <div class="edit">
@@ -71,37 +111,21 @@ export default function EditAccount() {
           <div class="edit__password">
             <span class="edit__password-title">تغییر گذرواژه</span>
             <div class="row">
+
               <div class="col-12">
                 <label class="edit__label">
-                  گذرواژه پیشین (در صورتی که قصد تغییر ندارید خالی بگذارید)
-                </label>
-                <input
-                  class="edit__input"
-                  type="text"
-                  placeholder="گذرواژه پیشین"
-                />
-              </div>
-              <div class="col-12">
-                <label class="edit__label">
-                  گذرواژه جدید (در صورتی که قصد تغییر ندارید خالی بگذارید)
+                  گذرواژه 
                 </label>
                 <input
                   class="edit__input"
                   type="text"
                   placeholder="گذرواژه جدید"
-                />
-              </div>
-              <div class="col-12">
-                <label class="edit__label">تکرار گذرواژه جدید</label>
-                <input
-                  class="edit__input"
-                  type="text"
-                  placeholder="تکرار گذرواژه جدید"
+                  onChange={(e)=>setPassword(e.target.value)}
                 />
               </div>
             </div>
           </div>
-          <button class="edit__btn" type="submit">
+          <button class="edit__btn" type="submit" onClick={updateUserInfo}>
             ذخیره تغییرات
           </button>
         </form>
