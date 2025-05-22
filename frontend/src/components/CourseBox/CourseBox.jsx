@@ -39,7 +39,23 @@ export default function CourseBox(props) {
                         <i className="fas fa-users course-box__users-icon"></i>
                         <span className="course-box__users-text">{props.registers}</span>
                       </div>
-                      <span className="course-box__price">{props.price===0?"رایگان":props.price.toLocaleString()}</span>
+
+                    </div>
+                    <div className="show-price-course-box">
+                         {props.price !== 0 && props.discount && props.discount !== 0 ? (
+                            <>
+                              <span className="course-box__price course-box__price--new">
+                                {(props.price - (props.price * props.discount / 100)).toLocaleString()}
+                              </span>
+                              <span className="course-box__price course-box__price--old" style={{textDecoration: "line-through", color: "#888", marginLeft: "8px"}}>
+                                {props.price.toLocaleString()}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="course-box__price">
+                              {props.price === 0 ? "رایگان" : props.price.toLocaleString()}
+                            </span>
+                          )}                     
                     </div>
                   </div>
 
@@ -49,7 +65,9 @@ export default function CourseBox(props) {
                       <i className="fas fa-arrow-left course-box__footer-icon"></i>
                     </a>
                   </div>
-
+                  {( props.price !== 0 && props.discount) && (
+                    <span class="courses-box__discount">%{props.discount}</span>
+                  )}
                 </Link>
               </div>
 
