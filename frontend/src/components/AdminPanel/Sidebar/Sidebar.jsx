@@ -67,6 +67,11 @@ export default function Sidebar() {
             </Link>
           </li>
           <li>
+            <Link to="/p-admin/discounts">
+              <span>کمپین ها</span>
+            </Link>
+          </li>
+          <li>
             <Link to="/p-admin/categories">
               <span>دسته‌بندی‌ها</span>
             </Link>

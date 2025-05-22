@@ -27,6 +27,7 @@ import OrdersDetail from "./pages/UserPanel/Orders/OrdersDetail";
 import UserPanelCourses from "./pages/UserPanel/Courses/Courses";
 import EditUserAccount from "./pages/UserPanel/EditAccount/EditAccount";
 import PAdminPrivate from "./components/Privates/PAdminPrivate";
+import Discounts from "./pages/AdminPanel/Discounts/Discounts";
 const Routes = [
   { path: "/", element: <Index /> },
   { path: "/category-info/:categoryName/:page", element: <CategoryInfo /> },
@@ -58,6 +59,7 @@ const Routes = [
       { path: "sessions", element: <Sessions /> },
       { path: "comments", element: <Comments /> },
       { path: "offs", element: <Offs /> },
+      { path: "discounts", element: <Discounts /> },
     ],
   },
   {
