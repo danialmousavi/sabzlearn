@@ -5,8 +5,16 @@ const categoryModel = require("../../models/category");
 const courseUserModel = require("../../models/course-user");
 
 exports.create = async (req, res) => {
-  const { name, description, shortName, categoryID, price, support, status } =
-    req.body;
+  const {
+    name,
+    description,
+    shortName,
+    categoryID,
+    price,
+    support,
+    status,
+    discount,
+  } = req.body;
 
   const course = await courseModel.create({
     name,
@@ -19,6 +27,7 @@ exports.create = async (req, res) => {
     status,
     support,
     cover: req.file.filename,
+    discount: Boolean(discount) === true ? discount : 0,
   });
 
   const populatedCourse = await courseModel
@@ -215,12 +224,15 @@ exports.getSessionInfo = async (req, res) => {
 };
 
 exports.getRelated = async (req, res) => {
-  const { shortName } = req.params
-  const course = await courseModel.findOne({ shortName })
-  let relatedCourses = await courseModel.find({ categoryID: course.categoryID })
+  const { shortName } = req.params;
+  const course = await courseModel.findOne({ shortName });
+  let relatedCourses = await courseModel.find({
+    categoryID: course.categoryID,
+  });
 
-  relatedCourses = relatedCourses.filter(course => course.shortName !== shortName)
+  relatedCourses = relatedCourses.filter(
+    (course) => course.shortName !== shortName
+  );
 
-  res.json(relatedCourses.splice(0, 4))
-
-}
+  res.json(relatedCourses.splice(0, 4));
+};

@@ -34,6 +34,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    discount: {
+      type: Number,
+      required: false,
+    },
     categoryID: {
       type: mongoose.Types.ObjectId,
       ref: "Category",
