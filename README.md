@@ -45,7 +45,7 @@ SabzLearn is a dynamic, CMS-style educational platform designed for selling onli
 ### Steps
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/sabzlearn.git
+git clone https://github.com/danialmousavi/sabzlearn.git
 
 # Navigate to the project directory
 cd sabzlearn
