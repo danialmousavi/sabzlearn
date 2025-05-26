@@ -34,7 +34,7 @@ export default function Sidebar() {
           <i className="fas fa-bars"></i>
         </div>
       </div>
-      <div className="sidebar-menu">
+      <div className="sidebar-menu" >
         <ul>
           <li className="active-menu">
             <Link to="/p-admin">

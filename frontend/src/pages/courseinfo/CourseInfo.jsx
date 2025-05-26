@@ -255,9 +255,9 @@ export default function CourseInfo() {
           {
             id: 2,
             title: "آموزش برنامه نویسی فرانت اند",
-            to: "category-info/frontend",
+            to: "category-info/frontend/1",
           },
-          { id: 3, title: "متخصص جاوااسکریپت", to: "course-info/js-expert" },
+          { id: 3,  title: `${courseDetails.name}`, to: `course-info/${courseDetails.shortName}` },
         ]}
       />
 
@@ -517,7 +517,7 @@ export default function CourseInfo() {
                   <div className="techer-details__header">
                     <div className="techer-details__header-right">
                       <img
-                        src="/images/info/teacher.jfif"
+                        src="/images/profile.png"
                         alt="Teacher Profile"
                         className="techer-details__header-img"
                       />
