@@ -43,7 +43,7 @@ export default function ArticleInfo() {
       <main className="main">
         <div className="container">
           <div className="row">
-            <div className="col-8">
+            <div className="col-8 article-info">
             <div className="article">
                 <h1 className="article__title">
                   {articleData.title}

@@ -45,9 +45,13 @@
     align-items: center;
     margin: 2rem 0;
 }
-
+div .article__score-icons{
+    display: flex;
+}
 .article__score-icon {
     margin-left: -0.4rem;
+    width: 20px;
+    height: 20px;
 }
 
 .article__score-text {
@@ -172,4 +176,7 @@
 .suggestion-articles__link {
     text-align: center;
     margin: 0 2rem;
+}
+.article-info img{
+    width: 100%;
 }
